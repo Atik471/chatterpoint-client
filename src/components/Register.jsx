@@ -12,12 +12,13 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const serverDomain = useContext(LocationContext);
+  const API = useContext(LocationContext);
   const { setUser, createWithGoogle, createWithEmail } =
     useContext(AuthContext);
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const [animationData, setAnimationData] = useState(null);
@@ -137,12 +138,23 @@ const Register = () => {
             placeholder="Email"
             {...register("email", { required: "Email is required" })}
           />
-            {errors.email && <p>{errors.email.message}</p>}
-          <input type="password" name="password" placeholder="Password" />
+          {errors.email && <p>{errors.email.message}</p>}
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            {...register("password", { required: "Password is required" })}
+          />
+          {errors.password && <p>{errors.password.message}</p>}
           <input
             type="password"
             name="confirmPassword"
             placeholder="Confirm Password"
+            {...register("confirmPassword", {
+                required: "Confirm Password is required",
+                validate: (value) =>
+                  value === watch("password") || "Passwords do not match",
+              })}
           />
           <button type="submit">Register</button>
 

@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.active {
+    color: #08BAFF;
+    font-weight: bold;
+  }
+  
+  .active:hover {
+    border-color: #08BAFF;
+  }
+  
+  .hover\:border-b-white:hover {
+    border-color: white;
+  }
+  

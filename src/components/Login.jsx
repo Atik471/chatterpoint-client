@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUser, createWithGoogle, signInWithEmail } =
     useContext(AuthContext);
-//   const API = useContext(LocationContext);
+  //   const API = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
