@@ -7,10 +7,9 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes/Router";
 import AuthProvider from "./contexts/AuthProvider";
 import { ToastContainer } from "react-toastify";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
-
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,10 +17,10 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <LocationProvider>
           <QueryClientProvider client={queryClient}>
-          <>
-            <ToastContainer></ToastContainer>
-            <RouterProvider router={router} />
-          </>
+            <>
+              <ToastContainer></ToastContainer>
+              <RouterProvider router={router} />
+            </>
           </QueryClientProvider>
         </LocationProvider>
       </AuthProvider>
