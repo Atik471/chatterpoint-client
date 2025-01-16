@@ -56,7 +56,12 @@ const Posts = () => {
       <div>
         {data?.posts?.map((post) => (
           <div key={post?._id} className="post-card">
-            <h3>{post?.title}</h3>
+            <h3
+              className="cursor-pointer"
+              onClick={() => navigate(`/post/${post._id}`)}
+            >
+              {post?.title}
+            </h3>
             <p>{post?.description}</p>
           </div>
         ))}
