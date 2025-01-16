@@ -99,12 +99,12 @@ const Login = () => {
       <Helmet>
         <title>ChatterPoint | Login</title>
       </Helmet>
-      <div className="w-full md:w-1/2 p-8 bg-white">
+      <div className="w-full md:w-1/2 p-8 bg-primary text-white">
         <h1>JOIN US</h1>
 
         <form
           onSubmit={handleSubmit(handleLoginWithEmail)}
-          className="space-y-4"
+          className="space-y-4 text-white"
         >
           <input
             type="text"
@@ -119,7 +119,7 @@ const Login = () => {
             placeholder="password"
             {...register("password", { required: "Password is required" })}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <p>{errors.password.message}</p> }
           <input type="submit" value="Login" />
 
           <p className="mt-4 text-center">

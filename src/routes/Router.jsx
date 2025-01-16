@@ -5,6 +5,7 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Membership from "../components/Membership";
 import ErrorPage from "../components/ErrorPage";
+import AddPost from "../components/AddPost";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
             {
                 path: "membership",
                 element: <Membership />
+            },
+            {
+                path: "add-post",
+                element: <AddPost />
             }
         ]
     }

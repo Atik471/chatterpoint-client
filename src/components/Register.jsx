@@ -4,13 +4,14 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+// import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Lottie from "lottie-react";
 import { LocationContext } from "../contexts/LocationProvider";
+import axios from "axios";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const API = useContext(LocationContext);
   const { setUser, createWithGoogle, createWithEmail } =
@@ -37,15 +38,22 @@ const Register = () => {
     fetchAnimation();
   }, []);
 
-  const handleTogglePassword = () => setShowPassword(!showPassword);
+  // const handleTogglePassword = () => setShowPassword(!showPassword);
 
-  const handleRegisterWithGoogle = () => {
+  const handleRegisterWithGoogle =  () => {
     setLoading(true);
     createWithGoogle()
-      .then((userCredential) => {
+      .then( (userCredential) => {
         setUser(userCredential.user);
         /*axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
         .then(cookie => console.log(cookie))*/
+
+        // axios.get(`${API}/users/${userCredential.user.email}`)
+
+        axios.post(`${API}/users/register`, {name: userCredential.user.displayName, email: userCredential.user.email, photoURL: userCredential.user.photoURL, role: "user", badges: ["bronze"]})
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+
         navigate("/");
         toast.success("Registration Successful!", {
           position: "top-left",
@@ -114,11 +122,11 @@ const Register = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-gray-100 py-4 md:px-24 px-6">
+    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-primary text-white py-4 md:px-24 px-6">
       <Helmet>
         <title>ServiceTrek | Register</title>
       </Helmet>
-      <div className="w-full md:w-1/2 bg-white shadow-lg p-6">
+      <div className="w-full md:w-1/2 p-6">
         <h1>Register</h1>
         <form
           onSubmit={handleSubmit(handleRegisterWithEmail)}
@@ -157,54 +165,9 @@ const Register = () => {
               })}
           />
           <button type="submit">Register</button>
-
-          {/* 
-
-          <TextField
-            label="Photo URL"
-            type="url"
-            variant="outlined"
-            fullWidth
-            {...register("photoURL")}
-          />
-          <div className="relative">
-            <TextField
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              variant="outlined"
-              fullWidth
-              {...register("password", { required: "Password is required" })}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            />
-            <button
-              type="button"
-              className="absolute right-3 top-3 text-gray-500"
-              onClick={handleTogglePassword}
-            >
-              {showPassword ? <FaEye size={24} /> : <FaEyeSlash size={24} />}
-            </button>
-          </div>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            style = {{backgroundColor: "#03853e", fontWeight: 600, paddingTop: "12px", paddingBottom: "12px"}}
-          >
-            Register
-          </Button> */}
         </form>
         <div className="flex items-center justify-center mt-4">
-          {/* <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleRegisterWithGoogle}
-            fullWidth
-            style = {{backgroundColor: "black", color:"white", fontWeight: 600, paddingTop: "12px", paddingBottom: "12px"}}
-          >
-            Register with Google
-          </Button> */}
+          <button onClick={handleRegisterWithGoogle}>Register with Google</button>
         </div>
         <p className="text-sm text-gray-500 mt-4 text-center">
           Already have an account?{" "}

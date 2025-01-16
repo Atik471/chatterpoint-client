@@ -1,11 +1,17 @@
 import Banner from "./Banner"
+import Tags from "./Tags"
+import Posts from "./Posts"
 
 const Home = () => {
     return (
-        <div className="min-h-screen md:px-[5%] px-4 md:py-10 py-5">
+        <section className="min-h-screen md:px-[5%] px-4 md:py-10 py-5">
             <Banner />
-            Home
-        </div>
+            <div className="grid grid-cols-4 gap-4">
+                <Tags />
+                <Posts />
+                {/* <Announcements /> */}
+            </div>
+        </section>
     );
 };
 

@@ -9,19 +9,20 @@ const Navbar = () => {
   const { user, setUser, logout } = useContext(AuthContext);
 
   const handLogout = async () => {
-    await logout().then(() => {
-      setUser(null);
-      toast.success("Logout Successful!", {
-        position: "top-left",
-        autoClose: 2000,
+    await logout()
+      .then(() => {
+        setUser(null);
+        toast.success("Logout Successful!", {
+          position: "top-left",
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        toast.error(`Login Failed! ${err.message}`, {
+          position: "top-left",
+          autoClose: 2000,
+        });
       });
-    })
-    .catch((err) => {
-      toast.error(`Login Failed! ${err.message}`, {
-        position: "top-left",
-        autoClose: 2000,
-      });
-    });
   };
 
   return (
@@ -61,9 +62,24 @@ const Navbar = () => {
       <div className="flex items-center space-x-8">
         <FaBell className="text-xl cursor-pointer hover:text-tertiary transition-all duration-300" />
         {!user ? (
-          <button onClick={() => navigate("/login")} className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary">Join Us</button>
+          <button
+            onClick={() => navigate("/login")}
+            className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary"
+          >
+            Join Us
+          </button>
         ) : (
-          <button onClick={handLogout}>Logout</button>
+          <>
+            <button onClick={handLogout}
+            className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary">Logout</button>
+            <div>
+              <img
+                src={user?.photoURL}
+                alt={user?.displayName}
+                className="w-10 h-10 rounded-full"
+              />
+            </div>
+          </>
         )}
       </div>
     </nav>
