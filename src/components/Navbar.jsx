@@ -104,7 +104,7 @@ const Navbar = () => {
               />
               {navDropdown && (
                 <div className="absolute top-[100%] right-0 p-3 rounded-lg border-2 border-secondary bg-primary">
-                  <Link to={"/dashboard"}>Dashboard</Link>
+                  <Link to={"/dashboard/my-profile"}>Dashboard</Link>
                   <button
                     onClick={handLogout}
                     className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"

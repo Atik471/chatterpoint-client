@@ -8,9 +8,9 @@ const Home = () => {
 
     return (
         <section className="min-h-screen md:px-[5%] px-4 md:py-10 py-5">
-            <Banner />
+            <Banner setSelectedTag={setSelectedTag} />
             <div className="grid grid-cols-5 gap-4">
-                <Tags setSelectedTag={setSelectedTag} />
+                <Tags setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
                 <Posts selectedTag={selectedTag} />
                 {/* <Announcements /> */}
             </div>

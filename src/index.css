@@ -3,15 +3,19 @@
 @tailwind utilities;
 
 .active {
-    color: #08BAFF;
-    font-weight: bold;
-  }
-  
-  .active:hover {
-    border-color: #08BAFF;
-  }
-  
-  .hover\:border-b-white:hover {
-    border-color: white;
-  }
-  
+  color: #08baff;
+  font-weight: bold;
+}
+
+.active:hover {
+  border-color: #08baff;
+}
+
+.hover\:border-b-white:hover {
+  border-color: white;
+}
+
+.dashnav > .active {
+  color: black;
+  background-color: white;
+}
