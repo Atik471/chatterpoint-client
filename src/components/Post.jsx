@@ -29,7 +29,7 @@ const Post = () => {
   return (
     <div>
       <img
-        src={data?.photoURL}
+        src={data?.photoURL || "/public/assets/pfp.png"}
         alt={data?.displayName}
         className="w-10 h-10 rounded-full"
       />

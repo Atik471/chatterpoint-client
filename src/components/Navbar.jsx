@@ -84,11 +84,12 @@ const Navbar = () => {
           >
             Join Us
           </button>
+          
         ) : (
           <>
             <div className="relative" ref={dropdownRef}>
               <img
-                src={user?.photoURL}
+                src={user?.photoURL || "/public/assets/pfp.png"}
                 alt={user?.displayName}
                 data-tooltip-id="nav-pfp"
                 data-tooltip-content={user?.displayName}

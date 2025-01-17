@@ -40,19 +40,31 @@ const Register = () => {
 
   // const handleTogglePassword = () => setShowPassword(!showPassword);
 
-  const handleRegisterWithGoogle =  () => {
+  const handleRegisterWithGoogle = () => {
     setLoading(true);
     createWithGoogle()
-      .then( (userCredential) => {
+      .then((userCredential) => {
         setUser(userCredential.user);
         /*axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
         .then(cookie => console.log(cookie))*/
 
         // axios.get(`${API}/users/${userCredential.user.email}`)
 
-        axios.post(`${API}/users/register`, {name: userCredential.user.displayName, email: userCredential.user.email, photoURL: userCredential.user.photoURL, role: "user", badges: ["bronze"]})
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err))
+        axios
+          .post(`${API}/users/register`, {
+            name: userCredential.user.displayName,
+            email: userCredential.user.email,
+            photoURL: userCredential.user.photoURL,
+            role: "user",
+            badges: ["bronze"],
+          })
+          .then((res) => console.log(res.data))
+          .catch((err) =>
+            toast.error(`Registration Failed! ${err}`, {
+              position: "top-left",
+              autoClose: 2000,
+            })
+          );
 
         navigate("/");
         toast.success("Registration Successful!", {
@@ -73,19 +85,6 @@ const Register = () => {
   };
 
   const handleRegisterWithEmail = async (data) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
-    if (!passwordRegex.test(data.password)) {
-      toast.error(
-        "Password must contain at least one uppercase letter, one lowercase letter, and be at least 6 characters long.",
-        {
-          position: "top-center",
-          autoClose: 3000,
-        }
-      );
-      return;
-    }
-
     setLoading(true);
     try {
       const userCredential = await createWithEmail(
@@ -94,6 +93,21 @@ const Register = () => {
         data.name,
         data.photoURL
       );
+      await axios
+        .post(`${API}/users/register`, {
+          name: data.name,
+          email: data.email,
+          photoURL: data?.photoURL,
+          role: "user",
+          badges: ["bronze"],
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) =>
+          toast.error(`Registration Failed! ${err}`, {
+            position: "top-left",
+            autoClose: 2000,
+          })
+        );
       setUser(userCredential.user);
       /*axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
         .then(cookie => console.log(cookie))*/
@@ -116,7 +130,7 @@ const Register = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        {/* <CircularProgress size={60} /> */} Loading...
+        Loading...
       </div>
     );
   }
@@ -137,6 +151,7 @@ const Register = () => {
             name="Username"
             placeholder="Username"
             {...register("name", { required: "Name is required" })}
+            className="bg-primary"
           />
           {errors.name && <p>{errors.name.message}</p>}
 
@@ -145,13 +160,31 @@ const Register = () => {
             name="email"
             placeholder="Email"
             {...register("email", { required: "Email is required" })}
+            className="bg-primary"
           />
           {errors.email && <p>{errors.email.message}</p>}
+
+          <input
+            type="text"
+            name="photoURL"
+            placeholder="Photo URL"
+            {...register("photoURL")}
+            className="bg-primary"
+          />
+
           <input
             type="password"
             name="password"
             placeholder="Password"
-            {...register("password", { required: "Password is required" })}
+            {...register("password", {
+              required: "Password is required",
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                message:
+                  "Password must be at least 6 characters long and include at least one uppercase and one lowercase letter",
+              },
+            })}
+            className="bg-primary"
           />
           {errors.password && <p>{errors.password.message}</p>}
           <input
@@ -159,15 +192,20 @@ const Register = () => {
             name="confirmPassword"
             placeholder="Confirm Password"
             {...register("confirmPassword", {
-                required: "Confirm Password is required",
-                validate: (value) =>
-                  value === watch("password") || "Passwords do not match",
-              })}
+              required: "Confirm Password is required",
+              validate: (value) =>
+                value === watch("password") || "Passwords do not match",
+            })}
+            className="bg-primary"
           />
+          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+
           <button type="submit">Register</button>
         </form>
         <div className="flex items-center justify-center mt-4">
-          <button onClick={handleRegisterWithGoogle}>Register with Google</button>
+          <button onClick={handleRegisterWithGoogle}>
+            Register with Google
+          </button>
         </div>
         <p className="text-sm text-gray-500 mt-4 text-center">
           Already have an account?{" "}

@@ -5,8 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
+import PropTypes from "prop-types";
 
-const Posts = () => {
+const Posts = ({ selectedTag }) => {
   const navigate = useNavigate();
   const API = useContext(LocationContext);
   const [page, setPage] = useState(1);
@@ -16,7 +17,7 @@ const Posts = () => {
   const fetchPosts = async () => {
     setIsLoading(true);
     const { data } = await axios.get(
-      `${API}/posts?page=${page}&limit=${limit}`
+      `${API}/posts?page=${page}&limit=${limit}${selectedTag === "All" ? "" : `&tag=${selectedTag}`}` 
     );
     setIsLoading(false);
     return data;
@@ -30,7 +31,7 @@ const Posts = () => {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, refetch, selectedTag]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;
@@ -44,7 +45,7 @@ const Posts = () => {
   };
 
   return (
-    <section className="col-span-3">
+    <section className="col-span-4">
       <div className="flex items-center justify-between">
         <BiEdit
           className="text-2xl text-white cursor-pointer"
@@ -84,6 +85,10 @@ const Posts = () => {
       </div>
     </section>
   );
+};
+
+Posts.propTypes = {
+  selectedTag: PropTypes.array,
 };
 
 export default Posts;

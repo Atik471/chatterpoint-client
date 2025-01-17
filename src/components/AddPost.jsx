@@ -6,6 +6,26 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+
+export const tags = [
+  "General Discussion",
+  "Programming",
+  "Questions",
+  "Tutorials",
+  "Education",
+  "Bug Reports",
+  "Projects",
+  "Off-Topic",
+  "News",
+  "Tips & Tricks",
+  "Technology Trends",
+  "Community",
+  "Events",
+  "Education",
+  "Showcase",
+];
+
+
 const AddPost = () => {
   const {
     register,
@@ -17,23 +37,7 @@ const AddPost = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const tags = [
-    "General Discussion",
-    "Programming",
-    "Questions",
-    "Tutorials",
-    "Education",
-    "Bug Reports",
-    "Projects",
-    "Off-Topic",
-    "News",
-    "Tips & Tricks",
-    "Technology Trends",
-    "Community",
-    "Events",
-    "Education",
-    "Showcase",
-  ];
+
 
   const handleAddPost = (data) => {
     setLoading(true);

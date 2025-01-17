@@ -64,6 +64,7 @@ const Login = () => {
     signInWithEmail(data.email, data.password)
       .then((userCredential) => {
         setUser(userCredential.user);
+        // setUser(userCredential.user);
         /*axios
           .post(`${API}/jwt`, userCredential.user.displayName, {
             withCredentials: true,
