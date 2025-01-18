@@ -87,12 +87,6 @@ const Register = () => {
   const handleRegisterWithEmail = async (data) => {
     setLoading(true);
     try {
-      const userCredential = await createWithEmail(
-        data.email,
-        data.password,
-        data.name,
-        data.photoURL
-      );
       await axios
         .post(`${API}/users/register`, {
           name: data.name,
@@ -108,6 +102,14 @@ const Register = () => {
             autoClose: 2000,
           })
         );
+
+      const userCredential = await createWithEmail(
+        data.email,
+        data.password,
+        data.name,
+        data.photoURL
+      );
+
       setUser(userCredential.user);
       /*axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
         .then(cookie => console.log(cookie))*/

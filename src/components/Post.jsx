@@ -18,7 +18,7 @@ const Post = ({ post }) => {
       >
         <div className="flex items-start gap-4">
           <img
-            src={post?.photoURL || "/public/assets/pfp.png"}
+            src={post?.photoURL || "/assets/pfp.png"}
             alt={post?.name}
             className="w-10 h-10 rounded-full"
           />

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -11,21 +11,54 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "../../firebase.init";
+import axios from "axios";
+import { LocationContext } from "./LocationProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  // const queryClient = useQueryClient();
+  const API = useContext(LocationContext);
+  // const { userData, refetch, isLoading, isError } = useUserData({ API: API, email: user?.email });
+  // if (isLoading) return <p>Loading...</p>;
+  // if (isError) return <p>Error fetching user data</p>;
 
+  // const { userData, refetch, isLoading, isError } = useUserData({ API: API, email: user?.email });
+
+  const queryClient = useQueryClient();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       if (currentuser) setUser(currentuser);
+      // refetch();
+
+      if(user){
+        queryClient
+        .fetchQuery({
+          queryKey: ["user",], // Unique key for caching
+          queryFn: async () => {
+            const response = await axios.get(`${API}/user/${user?.email}`); // Replace with your API endpoint
+            return response.data; // Extract data from Axios response
+          },
+        })
+        .then((res) => {
+          user.objectId = res._id;
+          user.badges = res.badges;
+          user.role = res.role;
+        })
+        .catch(() => {
+          //console.log(err);
+          //skip
+        });
+      }
+      
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [user, API, queryClient]);
 
   const googleProvider = new GoogleAuthProvider();
   const createWithGoogle = async () => {
@@ -37,17 +70,19 @@ const AuthProvider = ({ children }) => {
     return result;
   };
 
-  const signInWithEmail = async (email, password, photoURL) => {
+  const signInWithEmail = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
-    const user = userCredential.user;
+    //const user = userCredential.user;
 
+    /*
     if (photoURL) {
       await updateProfile(user, { photoURL });
-    }
+    }*/
+
     return userCredential;
   };
 

@@ -112,6 +112,7 @@ const Login = () => {
             name="email"
             placeholder="Email"
             {...register("email", { required: "Email is required" })}
+            className="bg-secondary"
           />
           {errors.email && <p>{errors.email.message}</p>}
           <input
@@ -119,6 +120,7 @@ const Login = () => {
             name="password"
             placeholder="password"
             {...register("password", { required: "Password is required" })}
+            className="bg-secondary"
           />
           {errors.password && <p>{errors.password.message}</p> }
           <input type="submit" value="Login" />

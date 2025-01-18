@@ -11,7 +11,7 @@ const Navbar = () => {
   const [navDropdown, setNavDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
-  const handLogout = async () => {
+  const handleLogout = async () => {
     await logout()
       .then(() => {
         setUser(null);
@@ -88,7 +88,7 @@ const Navbar = () => {
           <>
             <div className="relative" ref={dropdownRef}>
               <img
-                src={user?.photoURL || "/public/assets/pfp.png"}
+                src={user?.photoURL || "/assets/pfp.png"}
                 alt={user?.displayName}
                 data-tooltip-id="nav-pfp"
                 data-tooltip-content={user?.displayName}
@@ -102,10 +102,12 @@ const Navbar = () => {
                 id="nav-pfp"
               />
               {navDropdown && (
-                <div className="absolute top-[100%] right-0 p-3 rounded-lg border-2 border-secondary bg-primary">
-                  <Link to={"/dashboard/my-profile"}>Dashboard</Link>
+                <div className="absolute top-[100%] right-0 p-3 rounded-lg border-2 border-secondary bg-primary text-center">
+                  <h1 className="py-2 px-6 font-bold border-b-2 border-gray-800">{user?.displayName}</h1>
+                  <div className="py-1 pb-4 "><Link to={"/dashboard/my-profile"} >Dashboard</Link></div>
+                  
                   <button
-                    onClick={handLogout}
+                    onClick={handleLogout}
                     className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
                   >
                     Logout
