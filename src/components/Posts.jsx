@@ -58,10 +58,7 @@ const Posts = ({ selectedTag }) => {
           data-tooltip-content="Create a post"
           onClick={() => navigate("/dashboard/add-post")}
         >
-          <BiEdit
-            className="text-xl cursor-pointer -ml-1"
-           
-          />
+          <BiEdit className="text-xl cursor-pointer -ml-1" />
           <span>Post</span>
         </div>
         <ReactTooltip
@@ -106,9 +103,24 @@ const Posts = ({ selectedTag }) => {
         >
           Prev
         </button>
-        <span className="px-3 py-1 text-lg font-semibold text-gray-800 bg-gray-200 rounded-md shadow-sm">
-          {page}
-        </span>
+
+        {Array.from(
+          { length: data?.totalPages || 1 },
+          (_, index) => index + 1
+        ).map((pageNumber) => (
+          <button
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            className={`px-3 py-1 text-lg font-semibold rounded-md shadow-sm ${
+              pageNumber === page
+                ? "bg-tertiary text-white transition-all duration-300"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+          >
+            {pageNumber}
+          </button>
+        ))}
+
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page === data?.totalPages}

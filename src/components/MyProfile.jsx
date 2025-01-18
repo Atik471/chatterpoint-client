@@ -19,7 +19,7 @@ const MyProfile = () => {
   };
 
   const email = user.email;
-  const { data, isError, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["userPosts", email, 3],
     queryFn: () => fetchUserPosts({ email }),
     enabled: !!email,
@@ -36,7 +36,7 @@ const MyProfile = () => {
       <img
         src={user?.photoURL || "/assets/pfp.png"}
         alt={user?.displayName}
-        className="w-28 h-28 rounded-full border-4 border-tertiary transition-all duration-300 cursor-pointer"
+        className="w-28 h-28 rounded-full border-4 border-tertiary transition-all duration-300"
       />
       <h1 className="text-lg font-bold">{user?.displayName}</h1>
       <p className="-mt-4 text-sm text-tertiary">{user?.email}</p>

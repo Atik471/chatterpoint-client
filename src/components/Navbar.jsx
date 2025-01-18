@@ -103,7 +103,7 @@ const Navbar = () => {
               />
               {navDropdown && (
                 <div className="absolute top-[100%] right-0 p-3 rounded-lg border-2 border-secondary bg-primary text-center">
-                  <h1 className="py-2 px-6 font-bold border-b-2 border-gray-800">{user?.displayName}</h1>
+                  <h1 className="py-2 px-6 font-bold text-sm border-b-2 border-gray-800">{user?.displayName}</h1>
                   <div className="py-1 pb-4 "><Link to={"/dashboard/my-profile"} >Dashboard</Link></div>
                   
                   <button
