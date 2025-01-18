@@ -6,11 +6,15 @@ import axios from "axios";
 import { BiUpvote } from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
 import { MdOutlineInsertComment } from "react-icons/md";
+import { AuthContext } from "../contexts/AuthProvider";
+import { toast } from "react-toastify";
 
 const PostDetails = () => {
   const API = useContext(LocationContext);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext)
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -28,6 +32,43 @@ const PostDetails = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear();
+    const currDate = `${day} ${month} ${year}`;
+
+    const comment = e.target.comment.value;
+
+    axios
+      .post(`${API}/comment`, {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        comment: comment.comment,
+        date: currDate,
+        post: data._id
+      })
+      .then(() => {
+        toast.success("Successfully submitted your comment!", {
+          position: "top-left",
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        toast.error(`Failed to submit your comment! ${err}`, {
+          position: "top-left",
+          autoClose: 2000,
+        });
+      })
+      .finally(() => setLoading(false));
+  }
+
   return (
     <div className="md:w-[60%]  min-h-screen mx-auto">
       <div className="flex gap-4 items-start mt-12">
@@ -54,7 +95,7 @@ const PostDetails = () => {
         <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300 ml-4" />
       </div>
       <hr className="my-8 ml-14 border-white/20" />
-        <form>
+        <form onSubmit={handleSubmit} >
           <textarea
             name="comment"
             id="comment"
@@ -62,11 +103,13 @@ const PostDetails = () => {
             placeholder="Write your comment"
             style={{ resize: "none" }}
             className="border-2 border-secondary rounded-xl p-4 ml-14 bg-primary w-[94%]"
+            onChange={(e) => e.target.value === "" ? setLoading(true) : setLoading(false)}
           ></textarea>
           <input
             type="submit"
             value="Submit"
-            className="py-2 px-6 ml-14 my-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary self-end"
+            disabled={loading}
+            className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end ${loading ? "bg-gray-400" : "bg-tertiary hover:bg-white hover:text-primary"}`}
           />
         </form>
     </div>
