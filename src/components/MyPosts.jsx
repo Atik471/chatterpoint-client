@@ -3,12 +3,14 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const MyPosts = () => {
   const { user } = useContext(AuthContext);
   const API = useContext(LocationContext);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchUserPosts = async ({ email }) => {
     const response = await axios.get(
@@ -62,7 +64,7 @@ const MyPosts = () => {
                 {post.upvote - post.downvote}
               </td>
               <td className="px-4 py-2 border border-gray-800">
-                <button className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary">
+                <button className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary" onClick={() => navigate(`/dashboard/comments/${post._id}`)} >
                   View Comments
                 </button>
               </td>

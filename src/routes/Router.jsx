@@ -10,6 +10,7 @@ import Dashboard from "../layouts/Dashboard";
 import MyProfile from "../components/MyProfile"
 import MyPosts from "../components/MyPosts";
 import PostDetails from "../components/PostDetails";
+import CommentTable from "../components/CommentTable";
 
 const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
                 path: "add-post",
                 element: <AddPost />
             },
+            {
+                path: "comments/:postId",
+                element: <CommentTable />
+            }
         ]
     }
 ]);
