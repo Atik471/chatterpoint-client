@@ -8,6 +8,8 @@ import { BiDownvote } from "react-icons/bi";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
+import Comments from "./Comments";
+import { refetchComments } from "./Comments";
 
 const PostDetails = () => {
   const API = useContext(LocationContext);
@@ -50,15 +52,16 @@ const PostDetails = () => {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        comment: comment.comment,
+        comment: comment,
         date: currDate,
         post: data._id
       })
-      .then(() => {
+      .then( async () => {
         toast.success("Successfully submitted your comment!", {
           position: "top-left",
           autoClose: 2000,
         });
+        await refetchComments();
       })
       .catch((err) => {
         toast.error(`Failed to submit your comment! ${err}`, {
@@ -66,7 +69,10 @@ const PostDetails = () => {
           autoClose: 2000,
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        e.target.comment.value = "";
+        setLoading(true);
+      });
   }
 
   return (
@@ -112,6 +118,9 @@ const PostDetails = () => {
             className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end ${loading ? "bg-gray-400" : "bg-tertiary hover:bg-white hover:text-primary"}`}
           />
         </form>
+        {
+          !isLoading && <Comments postId={data?._id} />
+        }
     </div>
   );
 };
