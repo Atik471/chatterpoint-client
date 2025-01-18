@@ -84,7 +84,6 @@ const Navbar = () => {
           >
             Join Us
           </button>
-          
         ) : (
           <>
             <div className="relative" ref={dropdownRef}>

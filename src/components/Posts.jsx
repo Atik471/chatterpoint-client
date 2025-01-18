@@ -56,10 +56,11 @@ const Posts = ({ selectedTag }) => {
           className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary flex gap-1 text-sm cursor-pointer"
           data-tooltip-id="post"
           data-tooltip-content="Create a post"
+          onClick={() => navigate("/dashboard/add-post")}
         >
           <BiEdit
             className="text-xl cursor-pointer -ml-1"
-            onClick={() => navigate("/add-post")}
+           
           />
           <span>Post</span>
         </div>

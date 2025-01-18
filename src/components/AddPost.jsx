@@ -6,7 +6,6 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-
 export const tags = [
   "General Discussion",
   "Programming",
@@ -25,7 +24,6 @@ export const tags = [
   "Showcase",
 ];
 
-
 const AddPost = () => {
   const {
     register,
@@ -36,8 +34,6 @@ const AddPost = () => {
   const API = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-
 
   const handleAddPost = (data) => {
     setLoading(true);
@@ -89,54 +85,68 @@ const AddPost = () => {
 
   return (
     <div className="min-h-screen md:mx-[20%] mx-4 my-4">
-      <h1 className="text-xl font-bold text-tertiary my-4 text-center">
+      {/* <h1 className="text-xl font-bold text-tertiary my-4 text-left">
         Add a post
-      </h1>
-      <div>
-        <img
-          src={user?.photoURL}
-          alt={user?.displayName}
-          className="w-10 h-10 rounded-full"
-        />
-        <p className="text-tertiary text-center">{user?.displayName}</p>
-        <p>{user?.email}</p>
-      </div>
-      <form onSubmit={handleSubmit(handleAddPost)}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          {...register("title", { required: "Title is required" })}
-          className="bg-primary"
-        />
-        {errors.title && <p>{errors.title.message}</p>}
+      </h1> */}
+      <div className="bg-secondary p-4 rounded-lg mt-16">
+        <form onSubmit={handleSubmit(handleAddPost)}>
+          <div className="flex items-start gap-4 mb-4">
+            <img
+              src={user?.photoURL}
+              alt={user?.displayName}
+              className="w-10 h-10 rounded-full"
+            />
+            <div>
+              <p className="font-bold">{user?.displayName}</p>
+              <div>
+                <p className="text-sm text-gray-400">{user?.email}</p>
+                <select
+                  name="tags"
+                  placeholder="Tags"
+                  {...register("tags", { required: "Tag is required" })}
+                  className="bg-secondary w-full pb-1 rounded-xl my-2 border-2 text-sm"
+                  defaultValue={"Select a topic"}
+                >
+                  <option disabled selected value="Select a tag">
+                    Select a tag
+                  </option>
+                  {tags.map((tag, index) => (
+                    <>
+                      <option key={index}>{tag}</option>
+                    </>
+                  ))}
+                </select>
+                {errors.tags && <p>{errors.tags.message}</p>}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              name="title"
+              placeholder="Write a title"
+              {...register("title", { required: "Title is required" })}
+              className="bg-secondary text-xl font-semibold px-1 py-2 border-b-2 border-white/30 appearance-none w-full focus:outline-none"
+            />
+            {errors.title && <p>{errors.title.message}</p>}
 
-        <select
-          name="tags"
-          placeholder="Tags"
-          {...register("tags", { required: "Tag is required" })}
-          className="bg-primary"
-          defaultValue={"Select a topic"}
-        >
-          <option disabled selected value="Select a topic">
-            Select a topic
-          </option>
-          {tags.map((tag, index) => (
-            <>
-              <option key={index}>{tag}</option>
-            </>
-          ))}
-        </select>
-        {errors.tags && <p>{errors.tags.message}</p>}
-        <textarea
-          placeholder="Description"
-          style={{ resize: "none" }}
-          className="bg-primary"
-          {...register("description", { required: "Description is required" })}
-        ></textarea>
-        {errors.description && <p>{errors.description.message}</p>}
-        <input type="submit" value="Post" />
-      </form>
+            <textarea
+              placeholder="Write your post"
+              style={{ resize: "none" }}
+              rows="10"
+              className="bg-secondary px-1 py-2 rounded-lg appearance-none w-full focus:outline-none focus:border-transparent "
+              {...register("description", {
+                required: "Description is required",
+              })}
+            ></textarea>
+            {errors.description && <p>{errors.description.message}</p>}
+
+            <hr className="border-white/10" />
+
+            <input type="submit" value="Post" className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary self-end" />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -38,10 +38,6 @@ const router = createBrowserRouter([
                 element: <Membership />
             },
             {
-                path: "add-post",
-                element: <AddPost />
-            },
-            {
                 path: "post/:id",
                 element: <PostDetails />
             }
@@ -63,7 +59,11 @@ const router = createBrowserRouter([
             {
                 path: "my-posts",
                 element: <MyPosts />
-            }
+            },
+            {
+                path: "add-post",
+                element: <AddPost />
+            },
         ]
     }
 ]);
