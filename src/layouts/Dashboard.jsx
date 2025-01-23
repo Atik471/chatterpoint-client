@@ -5,7 +5,9 @@ import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { setUser, logout } = useContext(AuthContext);
+  const { user, setUser, logout } = useContext(AuthContext);
+
+  console.log()
 
   const handleLogout = async () => {
     await logout()
@@ -39,7 +41,7 @@ const Dashboard = () => {
             "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
           }
         >
-          My Profile
+          { user?.role === 'admin' ? "Admin Profile" : "My Profile"}
         </NavLink>
         <NavLink
           to={"/dashboard/add-post"}
@@ -57,6 +59,32 @@ const Dashboard = () => {
         >
           My Posts
         </NavLink>
+        <NavLink
+          to={"/dashboard/users"}
+          className={
+            "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
+          }
+        >
+          Manage Users
+        </NavLink>
+        <NavLink
+          to={"/dashboard/activities"}
+          className={
+            "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
+          }
+        >
+          Activities
+        </NavLink>
+        <NavLink
+          to={"/dashboard/make-announcement"}
+          className={
+            "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
+          }
+        >
+          Make Announcements
+        </NavLink>
+        
+        
         <hr className="border-gray-800 mr-5 my-4" />
         <NavLink
           to={"/"}

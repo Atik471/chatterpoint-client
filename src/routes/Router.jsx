@@ -11,6 +11,9 @@ import MyProfile from "../components/MyProfile"
 import MyPosts from "../components/MyPosts";
 import PostDetails from "../components/PostDetails";
 import CommentTable from "../components/CommentTable";
+import Users from "../components/Users";
+import Activities from "../components/Activities";
+import MakeAnnouncement from "../components/MakeAnnouncement"
 
 const router = createBrowserRouter([
     {
@@ -41,7 +44,7 @@ const router = createBrowserRouter([
             {
                 path: "post/:id",
                 element: <PostDetails />
-            }
+            },
         ],
     },
     {
@@ -68,6 +71,18 @@ const router = createBrowserRouter([
             {
                 path: "comments/:postId",
                 element: <CommentTable />
+            },
+            {
+                path: "users",
+                element: <Users />
+            },
+            {
+                path: "activities",
+                element: <Activities />
+            },
+            {
+                path: "make-announcement",
+                element: <MakeAnnouncement />
             }
         ]
     }
