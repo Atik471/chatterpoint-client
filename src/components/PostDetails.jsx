@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -25,12 +25,16 @@ const PostDetails = () => {
     return data;
   };
 
-  const { data, isError } = useQuery({
+  const { data, isError, refetch } = useQuery({
     //refetch
     queryKey: ["posts"],
     queryFn: fetchPosts,
     keepPreviousData: true,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [data])
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;

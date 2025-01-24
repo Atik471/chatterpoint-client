@@ -100,7 +100,7 @@ const CommentRow = ({ comment }) => {
           </select>
           <input
             type="submit"
-            value="Submit"
+            value="Report"
             className={`my-2 py-2 px-6 rounded-lg font-bold transition-all duration-300 ${
               selectedValue
                 ? "bg-tertiary text-white hover:bg-white hover:text-primary cursor-pointer"

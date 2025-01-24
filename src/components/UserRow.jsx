@@ -62,14 +62,14 @@ const UserRow = ({ user }) => {
       <td className="px-4 py-2 border border-gray-800">
         {user.role === "user" ? (
           <button
-            className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
+            className="py-1 px-3 rounded-lg bg-white font-bold text-primary transition-all duration-300 hover:bg-tertiary hover:text-white cursor-pointer"
             onClick={handleClickOpen}
           >
             Make Admin
           </button>
         ) : (
           <button
-            className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
+            className="py-1 px-3 rounded-lg bg-white font-bold text-primary transition-all duration-300 hover:bg-tertiary hover:text-white cursor-pointer"
             onClick={handleClickOpen}
           >
             Remove From Admin
