@@ -80,7 +80,7 @@ const UserRow = ({ user }) => {
         {user.badges?.[1] ? "Premium Member" : "Regular Member"}
       </td>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Make the user admin?</DialogTitle>
+        <DialogTitle>{user.role === 'user' ? "Make the user admin?" : "Remove from admin?"}</DialogTitle>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Close
