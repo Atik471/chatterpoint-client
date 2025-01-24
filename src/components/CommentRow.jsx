@@ -44,6 +44,7 @@ const CommentRow = ({ comment }) => {
       feedback: data.feedback,
       date: currDate,
       commentId: comment._id,
+      comment: comment.comment,
     })
     .then(() => {
 
@@ -83,7 +84,7 @@ const CommentRow = ({ comment }) => {
       <td className="px-4 py-2 border border-gray-800">
         {truncateText(comment.comment, 20)}
       </td>
-      <td>
+      <td className="px-4 py-2 border border-gray-800">
         <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
           <select
             {...register("feedback", { required: true })}

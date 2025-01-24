@@ -7,8 +7,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser, logout } = useContext(AuthContext);
 
-  console.log()
-
   const handleLogout = async () => {
     await logout()
       .then(() => {
