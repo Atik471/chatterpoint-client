@@ -54,7 +54,11 @@ const Dashboard = () => {
         <NavLink
           to={"/dashboard/my-posts"}
           className={
-            "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
+            `bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white ${
+              (location.pathname === "/dashboard/my-posts" || location.pathname.startsWith("/dashboard/comments/")
+                ? "active"
+                : "")
+            }`
           }
         >
           My Posts

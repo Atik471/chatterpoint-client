@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Dialog,
@@ -8,11 +8,18 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import axios from "axios";
+import { LocationContext } from "../contexts/LocationProvider";
+import { AuthContext } from "../contexts/AuthProvider";
+import { toast } from "react-toastify";
 
 const CommentRow = ({ comment }) => {
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, reset, watch } = useForm();
+  const [loading, setLoading] = useState(false);
   const selectedValue = watch("feedback");
+  const API = useContext(LocationContext);
+  const { user } = useContext(AuthContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,7 +30,38 @@ const CommentRow = ({ comment }) => {
   };
 
   const onSubmit = (data) => {
-    console.log("Selected Value:", data.feedback);
+    setLoading(true);
+
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear();
+    const currDate = `${day} ${month} ${year}`;
+
+    axios
+    .post(`${API}/report`, {
+      reportedBy: user.email,
+      feedback: data.feedback,
+      date: currDate,
+      commentId: comment._id,
+    })
+    .then(() => {
+
+      toast.success("Successfully submitted report!", {
+        position: "top-left",
+        autoClose: 2000,
+      });
+    })
+    .catch((err) => {
+      toast.error(`Failed to submit report! ${err}`, {
+        position: "top-left",
+        autoClose: 2000,
+      });
+    })
+    .finally(() => {
+      setLoading(false); 
+      reset();
+    });
   };
 
   const truncateText = (text, limit) => {
@@ -37,6 +75,7 @@ const CommentRow = ({ comment }) => {
     }
     return text;
   };
+
 
   return (
     <tr className="odd:bg-primary even:bg-secondary">
@@ -66,7 +105,7 @@ const CommentRow = ({ comment }) => {
                 ? "bg-tertiary text-white hover:bg-white hover:text-primary cursor-pointer"
                 : "bg-gray-400 text-white cursor-not-allowed"
             }`}
-            disabled={!selectedValue}
+            disabled={!selectedValue && loading}
           />
         </form>
       </td>
