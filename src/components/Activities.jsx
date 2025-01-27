@@ -37,9 +37,6 @@ const Activities = () => {
             <th className="px-4 py-2 border border-gray-800">Comment</th>
             <th className="px-4 py-2 border border-gray-800">Feedback</th>
             <th className="px-4 py-2 border border-gray-800">Action</th>
-            <th className="px-4 py-2 border border-gray-800">
-              Membership Status
-            </th>
           </tr>
         </thead>
         <tbody>
