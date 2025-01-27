@@ -14,7 +14,7 @@ const CommentTable = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const navigate = useNavigate();
 
   const fetchComment = async () => {

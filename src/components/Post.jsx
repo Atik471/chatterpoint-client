@@ -8,7 +8,7 @@ import { useContext } from "react";
 
 const Post = ({ post }) => {
   const navigate = useNavigate();
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <div
@@ -44,11 +44,16 @@ const Post = ({ post }) => {
       </div>
       <div className="pt-5 px-5 flex items-center justify-start gap-4">
         <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
-          <button disabled={!user && true} ><BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" /></button>
-          <button disabled={!user && true} ><BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" /></button>
+          <button disabled={!user && true}>
+            <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+          </button>
+          <button disabled={!user && true}>
+            <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+          </button>
         </div>
-        <button disabled={!user && true} ><MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" /></button>
-        
+        <button disabled={!user && true}>
+          <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+        </button>
       </div>
     </div>
   );

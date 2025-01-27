@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BiUpvote } from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
@@ -10,14 +10,30 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import Comments from "./Comments";
 import { refetchComments } from "./Comments";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  LinkedinShareButton,
+} from "react-share";
+
+import {
+  FacebookIcon,
+  TwitterIcon,
+  WhatsappIcon,
+  LinkedinIcon,
+} from "react-share";
 
 const PostDetails = () => {
   const API = useContext(LocationContext);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const url = `http://localhost:5173${location.pathname}`;
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -35,7 +51,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     refetch();
-  }, [data])
+  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;
@@ -59,9 +75,9 @@ const PostDetails = () => {
         photoURL: user.photoURL,
         comment: comment,
         date: currDate,
-        post: data._id
+        post: data._id,
       })
-      .then( async () => {
+      .then(async () => {
         toast.success("Successfully submitted your comment!", {
           position: "top-left",
           autoClose: 2000,
@@ -78,7 +94,7 @@ const PostDetails = () => {
         e.target.comment.value = "";
         setLoading(true);
       });
-  }
+  };
 
   return (
     <div className="md:w-[60%]  min-h-screen mx-auto">
@@ -100,32 +116,71 @@ const PostDetails = () => {
         <h1 className="mb-3 text-2xl font-bold">{data?.title}</h1>
         <p>{data?.description}</p>
       </div>
-      <div className="pt-5 px-5 ml-10 flex items-center justify-start gap-4">
-        <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
-        <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
-        <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300 ml-4" />
+      <div className="pt-5 px-5 ml-10 flex items-center justify-between gap-4">
+        <div className="flex gap-4">
+        <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
+          <button disabled={!user && true}>
+            <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+          </button>
+          <button disabled={!user && true}>
+            <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+          </button>
+        </div>
+        <button disabled={!user && true}>
+          <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+        </button>
+        </div>
+        <div className="flex gap-2">
+        <FacebookShareButton url={url} quote={data?.title}>
+          <FacebookIcon size={32} round />
+        </FacebookShareButton>
+        <TwitterShareButton url={url} title={data?.title}>
+          <TwitterIcon size={32} round />
+        </TwitterShareButton>
+        <WhatsappShareButton url={url} title={data?.title}>
+          <WhatsappIcon size={32} round />
+        </WhatsappShareButton>
+        <LinkedinShareButton url={url} title={data?.title}>
+          <LinkedinIcon size={32} round />
+        </LinkedinShareButton>
       </div>
+      </div>
+
+      
       <hr className="my-8 ml-14 border-white/20" />
-        <form onSubmit={handleSubmit} >
-          <textarea
-            name="comment"
-            id="comment"
-            rows={3}
-            placeholder="Write your comment"
-            style={{ resize: "none" }}
-            className="border-2 border-secondary rounded-xl p-4 ml-14 bg-primary w-[94%]"
-            onChange={(e) => e.target.value === "" ? setLoading(true) : setLoading(false)}
-          ></textarea>
-          {user ? <input
+      <form onSubmit={handleSubmit}>
+        <textarea
+          name="comment"
+          id="comment"
+          rows={3}
+          placeholder="Write your comment"
+          style={{ resize: "none" }}
+          className="border-2 border-secondary rounded-xl p-4 ml-14 bg-primary w-[94%]"
+          onChange={(e) =>
+            e.target.value === "" ? setLoading(true) : setLoading(false)
+          }
+        ></textarea>
+        {user ? (
+          <input
             type="submit"
             value="Submit"
             disabled={loading}
-            className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end ${loading ? "bg-gray-400" : "bg-tertiary hover:bg-white hover:text-primary"}`}
-          /> : <button className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end bg-tertiary hover:bg-white hover:text-primary`} onClick={() => navigate('/login')}>Login to submit</button>}
-        </form>
-        {
-          !isLoading && <Comments postId={data?._id} />
-        }
+            className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end ${
+              loading
+                ? "bg-gray-400"
+                : "bg-tertiary hover:bg-white hover:text-primary"
+            }`}
+          />
+        ) : (
+          <button
+            className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end bg-tertiary hover:bg-white hover:text-primary`}
+            onClick={() => navigate("/login")}
+          >
+            Login to submit
+          </button>
+        )}
+      </form>
+      {!isLoading && <Comments postId={data?._id} />}
     </div>
   );
 };

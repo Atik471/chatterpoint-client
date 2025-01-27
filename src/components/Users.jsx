@@ -10,7 +10,7 @@ const Users = () => {
   const API = useContext(LocationContext);
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchUsers = async () => {
