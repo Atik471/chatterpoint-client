@@ -9,7 +9,7 @@ const Dashboard = () => {
   const [reload, setReaload] = useState(0);
 
   useEffect(() => {
-    if(reload < 50) setReaload(reload+1);
+    if(reload < 100) setReaload(reload+1);
   }, [reload])
 
   const handleLogout = async () => {

@@ -12,19 +12,20 @@ const CommentTable = () => {
   const { postId } = useParams();
   const API = useContext(LocationContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
+  const [limit, setLimit] = useState(5);
   const navigate = useNavigate();
-  // const [select, setSelect] = useState("");
-
 
   const fetchComment = async () => {
     setIsLoading(true);
-    const { data } = await axios.get(`${API}/comments/${postId}`);
+    const { data } = await axios.get(`${API}/comments/${postId}?page=${page}&limit=${limit}`);
     setIsLoading(false);
     return data;
   };
 
   const { data, isError, refetch } = useQuery({
-    queryKey: ["comments"],
+    queryKey: ["comments", page],
     queryFn: fetchComment,
     keepPreviousData: true,
   });
@@ -34,13 +35,18 @@ const CommentTable = () => {
 
   const comments = data?.comments;
 
-  // refetchComments = refetch;
-
   const handleGoBack = () => {
     navigate(-1);
   }
 
-  // email of the commenter, the comment text, feedback, and a Report button.
+  const handlePageChange = async (newPage) => {
+    setIsLoading(true);
+    if (newPage < 1 || newPage > data.totalPages) return;
+    setPage(newPage);
+    await refetch();
+    setIsLoading(false);
+  };
+
   return (
     <div className="my-5">
       <button className="bg-tertiary hover:bg-white duration-200 transition-all p-1 rounded-full mb-5 ml-3" onClick={handleGoBack}>
@@ -60,6 +66,41 @@ const CommentTable = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="pagination flex items-center justify-center gap-4 mt-6">
+        <button
+          onClick={() => handlePageChange(page - 1)}
+          disabled={page === 1}
+          className="px-4 py-2 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition"
+        >
+          Prev
+        </button>
+
+        {Array.from(
+          { length: data?.totalPages || 1 },
+          (_, index) => index + 1
+        ).map((pageNumber) => (
+          <button
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            className={`px-3 py-1 text-lg font-semibold rounded-md shadow-sm ${
+              pageNumber === page
+                ? "bg-tertiary text-white transition-all duration-300"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+          >
+            {pageNumber}
+          </button>
+        ))}
+
+        <button
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page === data?.totalPages}
+          className="px-4 py-2 bg-gray-800 text-white rounded-md shadow-md hover:bg-gray-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
