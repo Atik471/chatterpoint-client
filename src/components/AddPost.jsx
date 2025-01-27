@@ -1,10 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 import axios from "axios";
 import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { buttonBaseClasses } from "@mui/material";
 
 export const tags = [
   "General Discussion",
@@ -34,6 +36,28 @@ const AddPost = () => {
   const API = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const fetchPostCount = async () => {
+    //setIsLoading(true);
+    const { data } = await axios.get(`${API}/post-count/${user.email}`);
+    setIsLoading(false);
+    return data;
+  };
+
+  const { data, isError, refetch } = useQuery({
+    queryKey: ["postCount"],
+    queryFn: fetchPostCount,
+    keepPreviousData: true,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [data, refetch]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading posts.</div>;
+
+  let postCount = data?.postCount;
 
   const handleAddPost = (data) => {
     setLoading(true);
@@ -143,7 +167,21 @@ const AddPost = () => {
 
             <hr className="border-white/10" />
 
-            <input type="submit" value="Post" className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary self-end" />
+            {postCount >= 5 && user?.badges?.[1] !== "gold" ? (
+              <div className="text-center">
+                <p className="my-1 mb-3">You have reached post limit. Please become a member to keep
+                posting</p>
+                <button className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary" onClick={() => navigate('/membership')}>
+                  Become a member
+                </button>
+              </div>
+            ) : (
+              <input
+                type="submit"
+                value="Post"
+                className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary self-end"
+              />
+            )}
           </div>
         </form>
       </div>

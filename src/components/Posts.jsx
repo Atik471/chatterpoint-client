@@ -50,7 +50,7 @@ const Posts = ({ selectedTag }) => {
   };
 
   return (
-    <section className="col-span-4 border-l-2 border-gray-800 min-h-[75vh] px-8">
+    <section className="col-span-4 border-x-2 border-gray-800 min-h-[75vh] px-8">
       <div className="flex items-center justify-between pb-5 border-b-2 border-gray-800">
         <div
           className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary flex gap-1 text-sm cursor-pointer"

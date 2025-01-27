@@ -14,6 +14,7 @@ const Home = () => {
                 <Tags setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
                 <Posts selectedTag={selectedTag} />
                 <Announcements />
+                {/* {announcementNum !== 0 ?  : ""} */}
             </div>
         </section>
     );

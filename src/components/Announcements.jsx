@@ -3,12 +3,12 @@ import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Announcement from "./Announcement";
-
-export let announcementNum = 0;
+import {AnnouncementContext} from "../contexts/AnnouncementProvider";
 
 const Announcements = () => {
     const API = useContext(LocationContext);
     const [isLoading, setIsLoading] = useState(false);
+    const { announcementnum, setAnnouncementnum } = useContext(AnnouncementContext);
     const fetchAnnouncements = async () => {
         setIsLoading(true);
         const { data } = await axios.get(
@@ -26,13 +26,14 @@ const Announcements = () => {
 
       
   useEffect(() => {
-    refetch();
-  }, [refetch]);
+    setAnnouncementnum(data?.length);
+  }, [data, setAnnouncementnum]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;
 
-  announcementNum = data.length;
+  
+  if(!announcementnum) <div></div>
 
     return (
         <div className="mt-4">

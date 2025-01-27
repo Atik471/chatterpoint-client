@@ -4,11 +4,12 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { announcementNum } from "./Announcements";
+import {AnnouncementContext} from "../contexts/AnnouncementProvider";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, setUser, logout } = useContext(AuthContext);
+  const { announcementnum } = useContext(AnnouncementContext);
   const [navDropdown, setNavDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -79,7 +80,7 @@ const Navbar = () => {
       <div className="flex items-center space-x-8">
         <div className="relative">
           <FaBell className="text-xl cursor-pointer hover:text-tertiary transition-all duration-300" />
-          <span className="text-xs text-red-500 font-extrabold absolute transition-all duration-300 -top-1 -right-2">{announcementNum}</span>
+          <span className="text-xs text-red-500 font-extrabold absolute transition-all duration-300 -top-1 -right-2">{announcementnum}</span>
         </div>
         {!user ? (
           <button

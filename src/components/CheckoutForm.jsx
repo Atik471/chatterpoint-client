@@ -81,7 +81,7 @@ const CheckoutForm = ({ clientSecret }) => {
           },
         }}
       ></CardElement>
-      <button type="submit" disabled={!stripe}>
+      <button type="submit" disabled={!stripe} className="py-1 mt-4 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary">
         Pay
       </button>
     </form>
