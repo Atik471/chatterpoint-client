@@ -20,13 +20,7 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const queryClient = useQueryClient();
   const API = useContext(LocationContext);
-  // const { userData, refetch, isLoading, isError } = useUserData({ API: API, email: user?.email });
-  // if (isLoading) return <p>Loading...</p>;
-  // if (isError) return <p>Error fetching user data</p>;
-
-  // const { userData, refetch, isLoading, isError } = useUserData({ API: API, email: user?.email });
 
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -35,12 +29,13 @@ const AuthProvider = ({ children }) => {
       // refetch();
 
       if(user){
+        setLoading(true);
         queryClient
         .fetchQuery({
-          queryKey: ["user",], // Unique key for caching
+          queryKey: ["user"],
           queryFn: async () => {
-            const response = await axios.get(`${API}/user/${user?.email}`); // Replace with your API endpoint
-            return response.data; // Extract data from Axios response
+            const response = await axios.get(`${API}/user/${user?.email}`);
+            return response.data;
           },
         })
         .then((res) => {

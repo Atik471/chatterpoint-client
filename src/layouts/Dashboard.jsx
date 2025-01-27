@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
@@ -6,6 +6,11 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser, logout } = useContext(AuthContext);
+  const [reload, setReaload] = useState(0);
+
+  useEffect(() => {
+    if(reload < 50) setReaload(reload+1);
+  }, [reload])
 
   const handleLogout = async () => {
     await logout()
@@ -61,30 +66,33 @@ const Dashboard = () => {
         >
           My Posts
         </NavLink>
-        <NavLink
+        {user?.role === 'admin' && <NavLink
           to={"/dashboard/users"}
           className={
             "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
           }
         >
           Manage Users
-        </NavLink>
-        <NavLink
+        </NavLink> }
+        
+        {user?.role === 'admin' && <NavLink
           to={"/dashboard/activities"}
           className={
             "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
           }
         >
           Activities
-        </NavLink>
-        <NavLink
+        </NavLink>}
+       
+       {user?.role === 'admin' && <NavLink
           to={"/dashboard/make-announcement"}
           className={
             "bg-secondary max-w-[14rem] px-3 py-1 my-2 rounded-lg font-bold hover:text-black transition-all duration-300 hover:bg-white"
           }
         >
           Make Announcements
-        </NavLink>
+        </NavLink>}
+        
         
         
         <hr className="border-gray-800 mr-5 my-4" />

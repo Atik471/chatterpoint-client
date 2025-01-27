@@ -29,6 +29,7 @@
     "react-router-dom": "^7.1.1",
     "react-toastify": "^11.0.2",
     "react-tooltip": "^5.28.0",
+    "recharts": "^2.15.0",
     "swiper": "^11.2.1"
   },
   "devDependencies": {

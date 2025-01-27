@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BiUpvote } from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
@@ -17,6 +17,7 @@ const PostDetails = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext)
+  const navigate = useNavigate();
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -115,12 +116,12 @@ const PostDetails = () => {
             className="border-2 border-secondary rounded-xl p-4 ml-14 bg-primary w-[94%]"
             onChange={(e) => e.target.value === "" ? setLoading(true) : setLoading(false)}
           ></textarea>
-          <input
+          {user ? <input
             type="submit"
             value="Submit"
             disabled={loading}
             className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end ${loading ? "bg-gray-400" : "bg-tertiary hover:bg-white hover:text-primary"}`}
-          />
+          /> : <button className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end bg-tertiary hover:bg-white hover:text-primary`} onClick={() => navigate('/login')}>Login to submit</button>}
         </form>
         {
           !isLoading && <Comments postId={data?._id} />

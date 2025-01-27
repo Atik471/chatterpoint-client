@@ -6,23 +6,42 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Post from "./Post";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
   const API = useContext(LocationContext);
 
   const fetchUserPosts = async ({ email }) => {
-    const response = await axios.get(
-      `${API}/my-posts/${email}?limit=${3}`
-    );
+    const response = await axios.get(`${API}/my-posts/${email}?limit=${3}`);
+    return response.data;
+  };
+
+  const fetchStats = async () => {
+    const response = await axios.get(`${API}/stats`);
     return response.data;
   };
 
   const email = user.email;
+
   const { data, refetch } = useQuery({
     queryKey: ["userPosts", email, 3],
     queryFn: () => fetchUserPosts({ email }),
     enabled: !!email,
+  });
+
+  const { data: statsData } = useQuery({
+    queryKey: ["stats"],
+    queryFn: () => fetchStats(),
   });
 
   useEffect(() => {
@@ -30,6 +49,11 @@ const MyProfile = () => {
   }, [user, refetch]);
 
   const posts = data?.posts;
+  const chartData = [
+    { name: "Users", stats: statsData?.userCount },
+    { name: "Posts", stats: statsData?.postCount },
+    { name: "Comments", stats: statsData?.commentCount },
+  ];
 
   return (
     <div className="md:w-[90%] mx-auto mt-12 flex flex-col items-center gap-4">
@@ -58,7 +82,37 @@ const MyProfile = () => {
         <ReactTooltip place="bottom" type="dark" effect="float" id="badge" />
       </div>
 
-      <h1 className="my-2 text-tertiary font-bold text-2xl text-left w-full">My Recent Posts</h1>
+        {
+          user.role === "admin" && (
+            <div className="my-4 flex gap-6">
+              <div>
+                <p className="text-tertiary font-bold">Users: <span className="text-white">{statsData?.userCount}</span></p>
+              </div>
+              <div>
+                <p className="text-tertiary font-bold">Posts: <span className="text-white">{statsData?.postCount}</span></p>
+              </div>
+              <div>
+                <p className="text-tertiary font-bold">Comments: <span className="text-white">{statsData?.commentCount}</span></p>
+              </div>
+            </div>
+          )
+        }
+      {user.role === "admin" && (
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData} margin={{ top: 20, bottom: 20, left: 10, right: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="stats" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+
+      <h1 className="my-2 text-tertiary font-bold text-2xl text-left w-full">
+        My Recent Posts
+      </h1>
       <div className="w-full">
         {posts?.map((post, index) => (
           <Post key={index} post={post} />
