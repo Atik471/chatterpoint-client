@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { announcementNum } from "./Announcements";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -76,7 +77,10 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center space-x-8">
-        <FaBell className="text-xl cursor-pointer hover:text-tertiary transition-all duration-300" />
+        <div className="relative">
+          <FaBell className="text-xl cursor-pointer hover:text-tertiary transition-all duration-300" />
+          <span className="text-xs text-red-500 font-extrabold absolute transition-all duration-300 -top-1 -right-2">{announcementNum}</span>
+        </div>
         {!user ? (
           <button
             onClick={() => navigate("/login")}
@@ -103,9 +107,13 @@ const Navbar = () => {
               />
               {navDropdown && (
                 <div className="absolute top-[100%] right-0 p-3 rounded-lg border-2 border-secondary bg-primary text-center">
-                  <h1 className="py-2 px-6 font-bold text-sm border-b-2 border-gray-800">{user?.displayName}</h1>
-                  <div className="py-1 pb-4 "><Link to={"/dashboard/my-profile"} >Dashboard</Link></div>
-                  
+                  <h1 className="py-2 px-6 font-bold text-sm border-b-2 border-gray-800">
+                    {user?.displayName}
+                  </h1>
+                  <div className="py-1 pb-4 ">
+                    <Link to={"/dashboard/my-profile"}>Dashboard</Link>
+                  </div>
+
                   <button
                     onClick={handleLogout}
                     className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"

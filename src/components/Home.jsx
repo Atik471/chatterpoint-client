@@ -2,6 +2,7 @@ import Banner from "./Banner"
 import Tags from "./Tags"
 import Posts from "./Posts"
 import { useState } from "react";
+import Announcements from "./Announcements";
 
 const Home = () => {
     const [selectedTag, setSelectedTag] = useState("All");
@@ -9,10 +10,10 @@ const Home = () => {
     return (
         <section className="min-h-screen md:px-[5%] px-4 md:py-10 py-5">
             <Banner setSelectedTag={setSelectedTag} />
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-6 gap-4">
                 <Tags setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
                 <Posts selectedTag={selectedTag} />
-                {/* <Announcements /> */}
+                <Announcements />
             </div>
         </section>
     );

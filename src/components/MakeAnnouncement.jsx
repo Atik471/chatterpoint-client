@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 import { LocationContext } from "../contexts/LocationProvider";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -16,7 +15,6 @@ const MakeAnnouncement = () => {
   const { user } = useContext(AuthContext);
   const API = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleAddPost = (data) => {
     setLoading(true);
