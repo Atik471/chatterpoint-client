@@ -16,6 +16,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import AddTags from "./AddTags";
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
@@ -109,6 +110,12 @@ const MyProfile = () => {
           </BarChart>
         </ResponsiveContainer>
       )}
+
+      {
+        user.role === 'admin' && (
+          <AddTags/>
+        )
+      }
 
       <h1 className="my-2 text-tertiary font-bold text-2xl text-left w-full">
         My Recent Posts

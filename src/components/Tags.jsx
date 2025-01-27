@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
-import { tags } from "./AddPost";
+import { TagContext } from "../contexts/TagsProvider";
+import { useContext } from "react";
 
 const Tags = ({ selectedTag, setSelectedTag }) => {
+  const {tags} = useContext(TagContext);
   return (
     <section className="col-span-1">
       <h1 className="font-bold text-lg text-left my-3">Tags</h1>

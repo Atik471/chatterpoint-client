@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
-import { tags } from "./AddPost";
+import { useContext } from "react";
+import { TagContext } from "../contexts/TagsProvider";
 
 const Banner = ({ setSelectedTag }) => {
+  const {tags} = useContext(TagContext);
 
 	  const handleTagChange = (e) => {
 		setSelectedTag(e.target.value);

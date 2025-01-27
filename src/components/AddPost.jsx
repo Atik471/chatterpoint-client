@@ -6,24 +6,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-
-export const tags = [
-  "General Discussion",
-  "Programming",
-  "Questions",
-  "Tutorials",
-  "Education",
-  "Bug Reports",
-  "Projects",
-  "Off-Topic",
-  "News",
-  "Tips & Tricks",
-  "Technology Trends",
-  "Community",
-  "Events",
-  "Education",
-  "Showcase",
-];
+import { TagContext } from "../contexts/TagsProvider";
 
 const AddPost = () => {
   const {
@@ -36,6 +19,7 @@ const AddPost = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const {tags} = useContext(TagContext);
   const fetchPostCount = async () => {
     //setIsLoading(true);
     const { data } = await axios.get(`${API}/post-count/${user.email}`);

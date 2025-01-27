@@ -33,7 +33,7 @@ const PostDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const url = `http://localhost:5173${location.pathname}`;
+  const url = `https://chatterpoint.web.app${location.pathname}`;
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -118,35 +118,34 @@ const PostDetails = () => {
       </div>
       <div className="pt-5 px-5 ml-10 flex items-center justify-between gap-4">
         <div className="flex gap-4">
-        <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
+          <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
+            <button disabled={!user && true}>
+              <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+            </button>
+            <button disabled={!user && true}>
+              <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+            </button>
+          </div>
           <button disabled={!user && true}>
-            <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+            <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
           </button>
-          <button disabled={!user && true}>
-            <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
-          </button>
-        </div>
-        <button disabled={!user && true}>
-          <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
-        </button>
         </div>
         <div className="flex gap-2">
-        <FacebookShareButton url={url} quote={data?.title}>
-          <FacebookIcon size={32} round />
-        </FacebookShareButton>
-        <TwitterShareButton url={url} title={data?.title}>
-          <TwitterIcon size={32} round />
-        </TwitterShareButton>
-        <WhatsappShareButton url={url} title={data?.title}>
-          <WhatsappIcon size={32} round />
-        </WhatsappShareButton>
-        <LinkedinShareButton url={url} title={data?.title}>
-          <LinkedinIcon size={32} round />
-        </LinkedinShareButton>
-      </div>
+          <FacebookShareButton url={url} quote={data?.title} disabled={!user}>
+            <FacebookIcon size={32} round />
+          </FacebookShareButton>
+          <TwitterShareButton url={url} title={data?.title} disabled={!user}>
+            <TwitterIcon size={32} round />
+          </TwitterShareButton>
+          <WhatsappShareButton url={url} title={data?.title} disabled={!user}>
+            <WhatsappIcon size={32} round />
+          </WhatsappShareButton>
+          <LinkedinShareButton url={url} title={data?.title} disabled={!user}>
+            <LinkedinIcon size={32} round />
+          </LinkedinShareButton>
+        </div>
       </div>
 
-      
       <hr className="my-8 ml-14 border-white/20" />
       <form onSubmit={handleSubmit}>
         <textarea

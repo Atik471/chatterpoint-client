@@ -9,6 +9,7 @@ import AuthProvider from "./contexts/AuthProvider";
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AnnouncementProvider from "./contexts/AnnouncementProvider";
+import TagsProvider from "./contexts/TagsProvider";
 
 const queryClient = new QueryClient();
 
@@ -19,12 +20,12 @@ createRoot(document.getElementById("root")).render(
       <AnnouncementProvider>
         <LocationProvider>
           <AuthProvider>
-            
+            <TagsProvider>
             <>
               <ToastContainer></ToastContainer>
               <RouterProvider router={router} />
             </>
-            
+            </TagsProvider>
           </AuthProvider>
         </LocationProvider>
         </AnnouncementProvider>
