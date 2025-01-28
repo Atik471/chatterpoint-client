@@ -31,7 +31,7 @@ const Comments = ({ postId }) => {
   
   refetchComments = refetch;
   return (
-    <div className="ml-14 mt-6">
+    <div className="mt-6">
         {
             comments?.map((comment, index) => (
                 <Comment key={index} comment={comment} />

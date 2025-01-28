@@ -88,7 +88,7 @@ const MyProfile = () => {
   ];
 
   return (
-    <div className="md:w-[90%] mx-auto mt-12 flex flex-col items-center gap-4">
+    <div className="md:w-[90%] mx-auto pt-12 flex flex-col items-center gap-4">
       <Helmet>
         <title>ChatterPoint | Profile</title>
       </Helmet>
@@ -145,10 +145,10 @@ const MyProfile = () => {
         </div>
       )}
       {user.role === "admin" && (
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="90%" height={300}  className="flex justify-center">
           <BarChart
             data={chartData}
-            margin={{ top: 20, bottom: 20, left: 10, right: 10 }}
+            margin={{ top: 20, bottom: 20, left:-10, right: 20 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
@@ -162,10 +162,10 @@ const MyProfile = () => {
 
       {user.role === "admin" && <AddTags />}
 
-      <h1 className="my-2 text-tertiary font-bold text-2xl text-left w-full">
+      <h1 className="my-2 text-tertiary font-bold text-2xl text-left w-[90%] md:w-full">
         My Recent Posts
       </h1>
-      <div className="w-full">
+      <div className="w-[90%] md:w-full">
         {posts?.map((post, index) => (
           <Post key={index} post={post} />
         ))}

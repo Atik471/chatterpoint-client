@@ -137,7 +137,7 @@ const PostDetails = () => {
   if (isError) return <div>Error loading posts.</div>;
 
   return (
-    <div className="md:w-[60%]  min-h-screen mx-auto pt-6">
+    <div className="md:w-[60%]  min-h-screen pt-6 md:mx-auto mx-4">
       <Helmet>
         <title>ChatterPoint | Post</title>
       </Helmet>
@@ -152,14 +152,14 @@ const PostDetails = () => {
           <p className="text-sm text-tertiary">{data?.email}</p>
         </div>
       </div>
-      <div className="my-4 ml-16">
+      <div className="my-4 ">
         <p className="bg-tertiary rounded-xl text-xs font-semibold text-white inline-block px-2">
           {data?.tags}
         </p>
         <h1 className="mb-3 text-2xl font-bold">{data?.title}</h1>
         <p>{data?.description}</p>
       </div>
-      <div className="pt-5 px-5 ml-10 flex items-center justify-between gap-4">
+      <div className="pt-5 md:px-5 flex items-center justify-between gap-4">
         <div className="flex gap-4">
           <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4  px-1 py-2">
             <button disabled={!user && true}>
@@ -199,7 +199,7 @@ const PostDetails = () => {
         </div>
       </div>
 
-      <hr className="my-8 ml-14 border-white/20" />
+      <hr className="my-8  border-white/20" />
       <form onSubmit={handleSubmit}>
         <textarea
           name="comment"
@@ -207,7 +207,7 @@ const PostDetails = () => {
           rows={3}
           placeholder="Write your comment"
           style={{ resize: "none" }}
-          className="border-2 border-secondary rounded-xl p-4 ml-14 bg-primary w-[94%]"
+          className="border-2 border-secondary rounded-xl p-4 bg-primary w-[94%]"
           onChange={(e) =>
             e.target.value === "" ? setLoading(true) : setLoading(false)
           }
@@ -217,7 +217,7 @@ const PostDetails = () => {
             type="submit"
             value="Submit"
             disabled={loading}
-            className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end ${
+            className={`py-2 px-6 my-4 rounded-lg font-bold transition-all duration-300  self-end ${
               loading
                 ? "bg-gray-400"
                 : "bg-tertiary hover:bg-white hover:text-primary"
@@ -225,7 +225,7 @@ const PostDetails = () => {
           />
         ) : (
           <button
-            className={`py-2 px-6 ml-14 my-4 rounded-lg font-bold transition-all duration-300  self-end bg-tertiary hover:bg-white hover:text-primary`}
+            className={`py-2 px-6 my-4 rounded-lg font-bold transition-all duration-300  self-end bg-tertiary hover:bg-white hover:text-primary`}
             onClick={() => navigate("/login")}
           >
             Login to submit

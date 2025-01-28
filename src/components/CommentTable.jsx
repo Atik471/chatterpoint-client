@@ -51,32 +51,36 @@ const CommentTable = () => {
   };
 
   return (
-    <div className="my-5">
+    <div className="mb-5 pt-16">
       <Helmet>
         <title>ChatterPoint | Comments</title>
       </Helmet>
+
       <button
         className="bg-tertiary hover:bg-white duration-200 transition-all p-1 rounded-full mb-5 ml-3"
         onClick={handleGoBack}
       >
         <IoChevronBackSharp className="text-white hover:text-black duration-200 transition-all text-xl" />
       </button>
-      <table className=" min-w-full border-collapse border border-gray-800 text-left">
-        <thead>
-          <tr className="bg-tertiary text-white">
-            <th className="px-4 py-2 border border-gray-800">Author Email</th>
-            <th className="px-4 py-2 border border-gray-800">Comment</th>
-            <th className="px-4 py-2 border border-gray-800">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {comments?.map((comment, index) => (
-            <CommentRow key={index} comment={comment} />
-          ))}
-        </tbody>
-      </table>
 
-      <div className="pagination flex items-center justify-center gap-4 mt-6">
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse border border-gray-800 text-left">
+          <thead>
+            <tr className="bg-tertiary text-white">
+              <th className="px-4 py-2 border border-gray-800">Author Email</th>
+              <th className="px-4 py-2 border border-gray-800">Comment</th>
+              <th className="px-4 py-2 border border-gray-800">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comments?.map((comment, index) => (
+              <CommentRow key={index} comment={comment} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="pagination flex flex-wrap items-center justify-center gap-4 mt-6">
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}

@@ -115,14 +115,14 @@ const AddPost = () => {
   }
 
   return (
-    <div className="min-h-screen md:mx-[20%] mx-4 my-4">
+    <div className="min-h-screen md:mx-[20%] mx-4 py-4 pt-16">
       {/* <h1 className="text-xl font-bold text-tertiary my-4 text-left">
         Add a post
       </h1> */}
       <Helmet>
         <title>ChatterPoint | Add Post</title>
       </Helmet>
-      <div className="bg-secondary p-4 rounded-lg mt-16">
+      <div className="bg-secondary p-4 rounded-lg ">
         <form onSubmit={handleSubmit(handleAddPost)}>
           <div className="flex items-start gap-4 mb-4">
             <img

@@ -45,27 +45,30 @@ const Activities = () => {
   const reports = data?.reports;
 
   return (
-    <div>
+    <div className="py-16">
       <Helmet>
         <title>ChatterPoint | Activities</title>
       </Helmet>
-      <table className="my-12 min-w-full border-collapse border border-gray-800 text-left">
-        <thead>
-          <tr className="bg-tertiary text-white">
-            <th className="px-4 py-2 border border-gray-800">Reported by</th>
-            <th className="px-4 py-2 border border-gray-800">Comment</th>
-            <th className="px-4 py-2 border border-gray-800">Feedback</th>
-            <th className="px-4 py-2 border border-gray-800">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reports?.map((report, index) => (
-            <ActivityRow key={index} report={report} />
-          ))}
-        </tbody>
-      </table>
 
-      <div className="pagination flex items-center justify-center gap-4 mt-6">
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse border border-gray-800 text-left">
+          <thead>
+            <tr className="bg-tertiary text-white">
+              <th className="px-4 py-2 border border-gray-800">Reported by</th>
+              <th className="px-4 py-2 border border-gray-800">Comment</th>
+              <th className="px-4 py-2 border border-gray-800">Feedback</th>
+              <th className="px-4 py-2 border border-gray-800">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reports?.map((report, index) => (
+              <ActivityRow key={index} report={report} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="pagination flex flex-wrap items-center justify-center gap-4 mt-6">
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}

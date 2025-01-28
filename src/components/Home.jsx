@@ -14,11 +14,10 @@ const Home = () => {
         <title>ChatterPoint | Home</title>
       </Helmet>
       <Banner setSelectedTag={setSelectedTag} />
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid md:grid-cols-6 grid-cols-1 gap-4">
         <Tags setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
         <Posts selectedTag={selectedTag} />
         <Announcements />
-        {/* {announcementNum !== 0 ?  : ""} */}
       </div>
     </section>
   );

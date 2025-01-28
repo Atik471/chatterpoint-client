@@ -4,7 +4,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { refetchReports } from "./Activities"; 
+import { refetchReports } from "./Activities";
 
 const ActivityRow = ({ report }) => {
   const [openReport, setOpenReport] = useState(false);
@@ -93,21 +93,24 @@ const ActivityRow = ({ report }) => {
       <td className="px-4 py-2 border border-gray-800">{report?.comment}</td>
       <td className="px-4 py-2 border border-gray-800">{report.feedback}</td>
       <td className="px-4 py-2 border border-gray-800">
-        <button
-          onClick={handleReportOpen}
-          className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
-          disabled={loading}
-        >
-          Remove Report
-        </button>
-        <button
-          onClick={handleCommentOpen}
-          className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer ml-4"
-          disabled={loading}
-        >
-          Delete Comment
-        </button>
+        <div className="flex flex-wrap justify-center gap-2">
+          <button
+            onClick={handleReportOpen}
+            className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
+            disabled={loading}
+          >
+            Remove Report
+          </button>
+          <button
+            onClick={handleCommentOpen}
+            className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
+            disabled={loading}
+          >
+            Delete Comment
+          </button>
+        </div>
       </td>
+
       <Dialog open={openReport} onClose={handleReportClose}>
         <DialogTitle>Remove report?</DialogTitle>
         <DialogActions>

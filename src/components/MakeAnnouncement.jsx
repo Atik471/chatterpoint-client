@@ -76,11 +76,11 @@ const MakeAnnouncement = () => {
   }
 
   return (
-    <div className="min-h-screen md:mx-[20%] mx-4 my-4">
+    <div className="min-h-screen md:mx-[20%] mx-4 py-16">
       <Helmet>
         <title>ChatterPoint | Announcements</title>
       </Helmet>
-      <div className="bg-secondary p-4 rounded-lg mt-16">
+      <div className="bg-secondary p-4 rounded-lg">
         <form onSubmit={handleSubmit(handleAddPost)}>
           <div className="flex items-start gap-4 mb-4">
             <img

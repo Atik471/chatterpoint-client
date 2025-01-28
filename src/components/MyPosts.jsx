@@ -56,45 +56,49 @@ const MyPosts = () => {
   }
 
   return (
-    <div>
+    <div className="pt-16">
       <Helmet>
         <title>ChatterPoint | My Posts</title>
       </Helmet>
-      <table className="my-12 min-w-full border-collapse border border-gray-800 text-left">
-        <thead>
-          <tr className="bg-tertiary text-white">
-            <th className="px-4 py-2 border border-gray-800">Title</th>
-            <th className="px-4 py-2 border border-gray-800">Votes</th>
-            <th className="px-4 py-2 border border-gray-800">Comments</th>
-            <th className="px-4 py-2 border border-gray-800">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts?.map((post, index) => (
-            <tr key={index} className="odd:bg-primary even:bg-secondary">
-              <td className="px-4 py-2 border border-gray-800">{post.title}</td>
-              <td className="px-4 py-2 border border-gray-800">
-                {post.upvote - post.downvote}
-              </td>
-              <td className="px-4 py-2 border border-gray-800">
-                <button
-                  className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary"
-                  onClick={() => navigate(`/dashboard/comments/${post._id}`)}
-                >
-                  View Comments
-                </button>
-              </td>
-              <td className="px-4 py-2 border border-gray-800">
-                <button className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary ">
-                  Delete
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse border border-gray-800 text-left">
+          <thead>
+            <tr className="bg-tertiary text-white">
+              <th className="px-4 py-2 border border-gray-800">Title</th>
+              <th className="px-4 py-2 border border-gray-800">Votes</th>
+              <th className="px-4 py-2 border border-gray-800">Comments</th>
+              <th className="px-4 py-2 border border-gray-800">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {posts?.map((post, index) => (
+              <tr key={index} className="odd:bg-primary even:bg-secondary">
+                <td className="px-4 py-2 border border-gray-800">
+                  {post.title}
+                </td>
+                <td className="px-4 py-2 border border-gray-800">
+                  {post.upvote - post.downvote}
+                </td>
+                <td className="px-4 py-2 border border-gray-800">
+                  <button
+                    className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary text-sm sm:text-base"
+                    onClick={() => navigate(`/dashboard/comments/${post._id}`)}
+                  >
+                    View Comments
+                  </button>
+                </td>
+                <td className="px-4 py-2 border border-gray-800">
+                  <button className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary text-sm sm:text-base">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <div className="pagination flex items-center justify-center gap-4 mt-6">
+      <div className="pagination flex flex-wrap items-center justify-center gap-4 mt-6">
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1}

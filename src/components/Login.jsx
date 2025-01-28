@@ -101,7 +101,7 @@ const Login = () => {
   }
 
   return (
-    <div className="grid md:grid-cols-2 gap-4 items-center min-h-screen bg-secondary">
+    <div className="grid md:grid-cols-2 gap-4 items-center min-h-screen bg-secondary px-3">
       <Helmet>
         <title>ChatterPoint | Login</title>
       </Helmet>

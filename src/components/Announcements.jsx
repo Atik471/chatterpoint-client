@@ -18,7 +18,7 @@ const Announcements = () => {
         return data;
       };
 
-      const { data, isError, refetch } = useQuery({
+      const { data, isError } = useQuery({
         queryKey: ["announcements"],
         queryFn: fetchAnnouncements,
         keepPreviousData: true,
@@ -36,7 +36,7 @@ const Announcements = () => {
   if(!announcementnum) <div></div>
 
     return (
-        <div className="mt-4">
+        <div className="pt-16 md:pt-4" id="announcements-section">
             <h1 className="text-xl text-white font-bold">Announcements</h1>
             <div className="pt-2">
         {data?.map((announcement) => (

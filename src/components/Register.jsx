@@ -51,7 +51,7 @@ const Register = () => {
           .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
           })
-          .then(res => sessionStorage.setItem('authToken', res.data?.token));
+          .then((res) => sessionStorage.setItem("authToken", res.data?.token));
         axios
           .post(`${API}/users/register`, {
             name: userCredential.user.displayName,
@@ -60,37 +60,36 @@ const Register = () => {
             role: "user",
             badges: ["bronze"],
           })
-          .then(() => {toast.success("Registration Successful!", {
-            position: "top-left",
-            autoClose: 2000,
-          });})
+          .then(() => {
+            toast.success("Registration Successful!", {
+              position: "top-left",
+              autoClose: 2000,
+            });
+          })
           .catch((err) => {
-            if(err.status === 400){
+            if (err.status === 400) {
               toast.error(`Email already registered`, {
                 position: "top-left",
                 autoClose: 2000,
               });
-            }
-            else{
+            } else {
               toast.error(`Registration Failed! ${err}`, {
                 position: "top-left",
                 autoClose: 2000,
               });
-          }}
-          );
+            }
+          });
 
         navigate("/");
-        
       })
       .catch((error) => {
         const errorMessage = error.message;
-        if(error.status === 400){
+        if (error.status === 400) {
           toast.error(`Email already registered`, {
             position: "top-left",
             autoClose: 2000,
           });
-        }
-        else{
+        } else {
           toast.error(`Registration Failed! ${errorMessage}`, {
             position: "top-left",
             autoClose: 2000,
@@ -113,12 +112,15 @@ const Register = () => {
           role: "user",
           badges: ["bronze"],
         })
-        .then((res) => {console.log(res.data)
+        .then((res) => {
+          console.log(res.data);
           axios
-          .post(`${API}/jwt`, data.email, {
-            withCredentials: true,
-          })
-          .then(res => sessionStorage.setItem('authToken', res.data?.token));
+            .post(`${API}/jwt`, data.email, {
+              withCredentials: true,
+            })
+            .then((res) =>
+              sessionStorage.setItem("authToken", res.data?.token)
+            );
         })
         .catch((err) =>
           toast.error(`Registration Failed! ${err}`, {
@@ -162,13 +164,12 @@ const Register = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-primary text-white py-4 md:px-24 px-6">
+    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-secondary text-white py-4 md:px-24 px-3">
       <Helmet>
         <title>ChatterPoint | Register</title>
       </Helmet>
 
-      {/* Left Side Form */}
-      <div className="w-full md:w-1/2 p-6 bg-secondary rounded-lg shadow-lg">
+      <div className="w-full md:w-1/2 p-6 bg-primary rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold mb-6 text-center">Register</h1>
 
         <form
@@ -182,21 +183,24 @@ const Register = () => {
               name="Username"
               placeholder="Username"
               {...register("name", { required: "Name is required" })}
-              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
           </div>
 
-          {/* Email Input */}
           <div>
             <input
               type="email"
               name="email"
               placeholder="Email"
               {...register("email", { required: "Email is required" })}
-              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
           </div>
 
           {/* Photo URL Input */}
@@ -206,7 +210,7 @@ const Register = () => {
               name="photoURL"
               placeholder="Photo URL"
               {...register("photoURL")}
-              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -224,7 +228,7 @@ const Register = () => {
                     "Password must be at least 6 characters long and include at least one uppercase and one lowercase letter",
                 },
               })}
-              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-gray-300"
@@ -232,7 +236,9 @@ const Register = () => {
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
           </div>
 
           {/* Confirm Password Input */}
@@ -246,15 +252,23 @@ const Register = () => {
                 validate: (value) =>
                   value === watch("password") || "Passwords do not match",
               })}
-              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-gray-300"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
-              {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              {showConfirmPassword ? (
+                <AiOutlineEyeInvisible />
+              ) : (
+                <AiOutlineEye />
+              )}
             </span>
-            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           {/* Submit Button */}
@@ -284,8 +298,6 @@ const Register = () => {
             Register with Google
           </button>
         </div>
-
-        
       </div>
 
       <div className="hidden md:block w-1/2 p-8">
