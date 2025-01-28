@@ -1,18 +1,23 @@
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { LocationContext } from "../contexts/LocationProvider";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = ({ clientSecret }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const { user } = useContext(AuthContext);
+  const { user, setRefetchUser, refetchUser } = useContext(AuthContext);
   const API = useContext(LocationContext);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     if (!stripe || !elements) {
       return;
@@ -51,16 +56,34 @@ const CheckoutForm = ({ clientSecret }) => {
         console.log("Payment confirmation failed:", confirmError);
       } else {
         console.log("Payment successful:", paymentIntent);
-        axios.put(`${API}/update-badges`, {
+        axios
+          .put(`${API}/update-badges`, {
             userId: user.objectId,
           })
-          .then(res => console.log(res))
-          .catch(e => console.log(e))
+          .then((res) => {
+            console.log(res);
+            setRefetchUser(refetchUser+1)
+            toast.success("Payment successful! You have become a premium member! ", {
+              position: "top-left",
+              autoClose: 2000,
+            });
+            navigate('/');
+          })
+          .catch((e) => {
+            console.log(e);
+            toast.error(`Payment failed! You have become a premium member! ${e}`, {
+              position: "top-left",
+              autoClose: 3500,
+            });
+          });
       }
     } catch (error) {
       console.log("Unexpected error:", error);
+    } finally {
+      setLoading(false);
+      // const newUser = user;
+      // setUser(newUser);
     }
-    
   };
 
   return (
@@ -81,7 +104,11 @@ const CheckoutForm = ({ clientSecret }) => {
           },
         }}
       ></CardElement>
-      <button type="submit" disabled={!stripe} className="py-1 mt-4 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary">
+      <button
+        type="submit"
+        disabled={!stripe}
+        className={`py-1 mt-4 px-4 rounded-lg font-bold transition-all duration-300 hover:bg-white hover:text-primary ${loading ? 'bg-gray-500' : "bg-tertiary "}`}
+      >
         Pay
       </button>
     </form>

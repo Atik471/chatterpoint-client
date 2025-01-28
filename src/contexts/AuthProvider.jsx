@@ -21,6 +21,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const API = useContext(LocationContext);
+  const [ refetchUser, setRefetchUser ] = useState(0);
 
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -53,7 +54,7 @@ const AuthProvider = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, [user, API, queryClient]);
+  }, [user, API, queryClient, refetchUser]);
 
   const googleProvider = new GoogleAuthProvider();
   const createWithGoogle = async () => {
@@ -109,6 +110,8 @@ const AuthProvider = ({ children }) => {
     createWithEmail,
     loading,
     setLoading,
+    setRefetchUser,
+    refetchUser
   };
 
   if (loading) {
