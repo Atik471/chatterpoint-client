@@ -112,22 +112,29 @@ const MyProfile = () => {
       </div>
 
       {user.role === "admin" && (
-        <div className="my-4 flex gap-6">
-          <div>
-            <p className="text-tertiary font-bold">
-              Users: <span className="text-white">{statsData?.userCount}</span>
-            </p>
-          </div>
-          <div>
-            <p className="text-tertiary font-bold">
-              Posts: <span className="text-white">{statsData?.postCount}</span>
-            </p>
-          </div>
-          <div>
-            <p className="text-tertiary font-bold">
-              Comments:{" "}
-              <span className="text-white">{statsData?.commentCount}</span>
-            </p>
+        <div>
+          <h1 className="text-center font-bold text-tertiary text-2xl my-3 mt-6">
+            ChatterPoint Stats
+          </h1>
+          <div className="my-4 flex gap-6">
+            <div>
+              <p className="text-tertiary font-bold">
+                Users:{" "}
+                <span className="text-white">{statsData?.userCount}</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-tertiary font-bold">
+                Posts:{" "}
+                <span className="text-white">{statsData?.postCount}</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-tertiary font-bold">
+                Comments:{" "}
+                <span className="text-white">{statsData?.commentCount}</span>
+              </p>
+            </div>
           </div>
         </div>
       )}

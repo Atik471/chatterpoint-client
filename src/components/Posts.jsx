@@ -16,11 +16,12 @@ const Posts = ({ selectedTag }) => {
   // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = useState(5);
   const [isLoading, setIsLoading] = useState(false);
+  const [sort, setSort] = useState(false);
 
   const fetchPosts = async () => {
     setIsLoading(true);
     const { data } = await axios.get(
-      `${API}/posts?page=${page}&limit=${limit}${
+      `${API}/posts?page=${page}&limit=${limit}&sort=${sort}${
         selectedTag === "All" ? "" : `&tag=${selectedTag}`
       }`
     );
@@ -36,7 +37,7 @@ const Posts = ({ selectedTag }) => {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch, selectedTag]);
+  }, [page, refetch, selectedTag, sort]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;
@@ -70,13 +71,16 @@ const Posts = ({ selectedTag }) => {
         />
 
         <div
-          className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary flex gap-1 text-sm cursor-pointer"
+          className={`py-2 px-4 rounded-lg  ${sort ? "bg-tertiary text-white" : "bg-white text-black"} font-bold transition-all duration-300 flex gap-1 text-sm cursor-pointer`}
           data-tooltip-id="sort"
           data-tooltip-content="Sort by popularity"
+          onClick={() => {
+            setSort(!sort);
+            // refetch();
+          }}
         >
           <BiSort
             className="text-xl cursor-pointer -ml-1"
-            // onClick={() => navigate("/add-post")}
           />
           <span>Popular</span>
         </div>
