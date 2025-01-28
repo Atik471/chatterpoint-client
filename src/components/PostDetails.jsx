@@ -33,6 +33,7 @@ const PostDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [vote, setVote] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
 
   const url = `https://chatterpoint.web.app${location.pathname}`;
 
@@ -56,6 +57,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     setVote(data.upvote - data.downvote);
+    setCommentCount(data.comments);
   }, [setVote, data])
 
   const handleSubmit = async (e) => {
@@ -84,6 +86,7 @@ const PostDetails = () => {
           position: "top-left",
           autoClose: 2000,
         });
+        setCommentCount(commentCount+1);
         await refetchComments();
       })
       .catch((err) => {
@@ -154,7 +157,7 @@ const PostDetails = () => {
       </div>
       <div className="pt-5 px-5 ml-10 flex items-center justify-between gap-4">
         <div className="flex gap-4">
-          <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
+          <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4  px-1 py-2">
             <button disabled={!user && true}>
               <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" onClick={handleUpVote} />
             </button>
@@ -163,9 +166,12 @@ const PostDetails = () => {
               <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" onClick={handleDownVote} />
             </button>
           </div>
+          <div className="flex items-center gap-3">
           <button disabled={!user && true}>
             <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
           </button>
+          <span>{commentCount}</span>
+          </div>
         </div>
         <div className="flex gap-2">
           <FacebookShareButton url={url} quote={data?.title} disabled={!user}>
