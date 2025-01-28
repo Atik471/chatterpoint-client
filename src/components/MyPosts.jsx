@@ -14,9 +14,12 @@ const MyPosts = () => {
   const navigate = useNavigate();
 
   const fetchUserPosts = async ({ email }) => {
+    const token = sessionStorage.getItem("authToken");
     const response = await axios
       .get(`${API}/my-posts/${email}?limit=${5}&page=${page}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .catch((err) => {
         console.error("Axios Error:", err.status);

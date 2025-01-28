@@ -8,7 +8,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { useNavigate } from "react-router-dom";
 
 const AddTags = () => {
-  const {tags, refetch} = useContext(TagContext);
+  const { tags, refetch } = useContext(TagContext);
   const [loading, setLoading] = useState(false);
   const [openForm, setOpenForm] = useState(false);
   const navigate = useNavigate();
@@ -22,13 +22,19 @@ const AddTags = () => {
 
   const onSubmit = (data) => {
     setLoading(true);
-
+    const token = sessionStorage.getItem("authToken");
     axios
-      .post(`${API}/tags`, {
-        tag: data.tagname
-      }, {
-        withCredentials: true,
-      })
+      .post(
+        `${API}/tags`,
+        {
+          tag: data.tagname,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(() => {
         toast.success("Successfully added tag!", {
           position: "top-left",
@@ -41,7 +47,7 @@ const AddTags = () => {
           autoClose: 2000,
         });
         console.error("Axios Error:", err.status);
-        if(err.status === 401) navigate('/login');
+        if (err.status === 401) navigate("/login");
         throw err;
       })
       .finally(() => {
@@ -76,10 +82,7 @@ const AddTags = () => {
           )}
         </div>
         {openForm && (
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex gap-2"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2">
             <input
               type="text"
               id="tagname"
@@ -90,9 +93,7 @@ const AddTags = () => {
               placeholder="tagname"
             />
             {errors.tagname && (
-              <p className="text-red-500 text-sm">
-                {errors.tagname.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.tagname.message}</p>
             )}
 
             <button
@@ -102,7 +103,12 @@ const AddTags = () => {
             >
               Submit
             </button>
-            <button onClick={() => setOpenForm(!openForm)} className="px-2 bg-white hover:bg-tertiary transition-all duration-300 hover:text-white font-bold text-black rounded">Cancel</button>
+            <button
+              onClick={() => setOpenForm(!openForm)}
+              className="px-2 bg-white hover:bg-tertiary transition-all duration-300 hover:text-white font-bold text-black rounded"
+            >
+              Cancel
+            </button>
           </form>
         )}
       </div>

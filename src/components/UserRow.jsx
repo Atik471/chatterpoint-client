@@ -26,9 +26,12 @@ const UserRow = ({ user }) => {
   };
 
   const handleSubmit = () => {
+    const token = sessionStorage.getItem("authToken");
     axios
       .put(`${API}/user/update-role/${user._id}`, user.role === 'user' ? {role: 'admin'} : {role: 'user'}, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then(() => refetchUsers())
       .catch((err) => {

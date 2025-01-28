@@ -28,6 +28,7 @@ const MakeAnnouncement = () => {
     const year = date.getFullYear();
     const currDate = `${day} ${month} ${year}`;
 
+    const token = sessionStorage.getItem("authToken");
     axios
       .post(
         `${API}/announcements`,
@@ -40,7 +41,9 @@ const MakeAnnouncement = () => {
           date: currDate,
         },
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
       .then(() => {

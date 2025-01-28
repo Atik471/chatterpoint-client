@@ -49,7 +49,7 @@ const Login = () => {
           .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
           })
-          .then((cookie) => console.log(cookie));
+          .then(res => sessionStorage.setItem('authToken', res.data?.token));
         navigate("/");
         toast.success(`Login Successful`, {
           position: "top-left",
@@ -73,7 +73,7 @@ const Login = () => {
         axios
           .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
-          })
+          }).then(res => sessionStorage.setItem('authToken', res.data?.token))
           
         toast.success("Login Successful!", {
           position: "top-left",

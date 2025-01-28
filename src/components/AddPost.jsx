@@ -20,16 +20,21 @@ const AddPost = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const {tags} = useContext(TagContext);
+  const { tags } = useContext(TagContext);
   const fetchPostCount = async () => {
     //setIsLoading(true);
-    const { data } = await axios.get(`${API}/post-count/${user.email}`, {
-      withCredentials: true,
-    }).catch((err) => {
-      console.error("Axios Error:", err.status);
-      if(err.status === 401) navigate('/login');
-      throw err;
-    });
+    const token = sessionStorage.getItem('authToken');
+    const { data } = await axios
+      .get(`${API}/post-count/${user.email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((err) => {
+        console.error("Axios Error:", err.status);
+        if (err.status === 401) navigate("/login");
+        throw err;
+      });
     setIsLoading(false);
     return data;
   };
@@ -39,8 +44,6 @@ const AddPost = () => {
     queryFn: fetchPostCount,
     keepPreviousData: true,
   });
-
-  
 
   useEffect(() => {
     refetch();
@@ -60,21 +63,29 @@ const AddPost = () => {
     const year = date.getFullYear();
     const currDate = `${day} ${month} ${year}`;
 
+    const token = sessionStorage.getItem("authToken");
+
     axios
-      .post(`${API}/posts`, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        title: data.title,
-        tags: data.tags,
-        description: data.description,
-        date: currDate,
-        upvote: 0,
-        downvote: 0,
-        comments: 0,
-      }, {
-        withCredentials: true,
-      })
+      .post(
+        `${API}/posts`,
+        {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          title: data.title,
+          tags: data.tags,
+          description: data.description,
+          date: currDate,
+          upvote: 0,
+          downvote: 0,
+          comments: 0,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(() => {
         //console.log(res.data);
         navigate("/");
@@ -89,7 +100,7 @@ const AddPost = () => {
           autoClose: 2000,
         });
         console.error("Axios Error:", err.status);
-        if(err.status === 401) navigate('/login');
+        if (err.status === 401) navigate("/login");
         throw err;
       })
       .finally(() => setLoading(false));
@@ -109,8 +120,8 @@ const AddPost = () => {
         Add a post
       </h1> */}
       <Helmet>
-              <title>ChatterPoint | Add Post</title>
-            </Helmet>
+        <title>ChatterPoint | Add Post</title>
+      </Helmet>
       <div className="bg-secondary p-4 rounded-lg mt-16">
         <form onSubmit={handleSubmit(handleAddPost)}>
           <div className="flex items-start gap-4 mb-4">
@@ -168,9 +179,14 @@ const AddPost = () => {
 
             {postCount >= 5 && user?.badges?.[1] !== "gold" ? (
               <div className="text-center">
-                <p className="my-1 mb-3">You have reached post limit. Please become a member to keep
-                posting</p>
-                <button className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary" onClick={() => navigate('/membership')}>
+                <p className="my-1 mb-3">
+                  You have reached post limit. Please become a member to keep
+                  posting
+                </p>
+                <button
+                  className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary"
+                  onClick={() => navigate("/membership")}
+                >
                   Become a member
                 </button>
               </div>

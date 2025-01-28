@@ -6,15 +6,12 @@ import { toast } from "react-toastify";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import {AnnouncementContext} from "../contexts/AnnouncementProvider";
 import { useLocation } from 'react-router-dom';
-import axios from "axios";
-import { LocationContext } from "../contexts/LocationProvider";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, setUser, logout } = useContext(AuthContext);
   const { announcementnum } = useContext(AnnouncementContext);
   const [navDropdown, setNavDropdown] = useState(false);
-  const API = useContext(LocationContext);
   const location = useLocation();
   const dropdownRef = useRef(null);
 
@@ -26,11 +23,7 @@ const Navbar = () => {
     await logout()
       .then(() => {
         setUser(null);
-        axios
-          .post(`${API}/logout`, {}, {
-            withCredentials: true,
-          })
-          .then(() => console.log("Logged out"));
+        sessionStorage.removeItem('authToken');
         toast.success("Logout Successful!", {
           position: "top-left",
           autoClose: 2000,

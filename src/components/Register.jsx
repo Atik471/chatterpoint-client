@@ -51,7 +51,7 @@ const Register = () => {
           .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
           })
-          .then((cookie) => console.log(cookie));
+          .then(res => sessionStorage.setItem('authToken', res.data?.token));
         axios
           .post(`${API}/users/register`, {
             name: userCredential.user.displayName,
@@ -118,7 +118,7 @@ const Register = () => {
           .post(`${API}/jwt`, data.email, {
             withCredentials: true,
           })
-          .then((cookie) => console.log(cookie));
+          .then(res => sessionStorage.setItem('authToken', res.data?.token));
         })
         .catch((err) =>
           toast.error(`Registration Failed! ${err}`, {

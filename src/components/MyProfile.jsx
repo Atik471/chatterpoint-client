@@ -26,9 +26,12 @@ const MyProfile = () => {
   const navigate = useNavigate();
 
   const fetchUserPosts = async ({ email }) => {
+    const token = sessionStorage.getItem('authToken');
     const response = await axios
       .get(`${API}/my-posts/${email}?limit=${3}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .catch((err) => {
         console.error("Axios Error:", err.status);
@@ -40,9 +43,12 @@ const MyProfile = () => {
   };
 
   const fetchStats = async () => {
+    const token = sessionStorage.getItem('authToken');
     const response = await axios
       .get(`${API}/stats`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .catch((err) => {
         console.error("Axios Error:", err.status);
