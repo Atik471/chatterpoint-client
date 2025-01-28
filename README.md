@@ -29,7 +29,7 @@ ChatterPoint is a forum website where users can create, view, comment on, and in
 
 ## Live Demo
 
-Check out the live site: **[Forum Website](https://chatterpoint.web.app)**
+Check out the live site: **[ChatterPoint](https://chatterpoint.web.app)**
 
 ## Admin Credentials
 
