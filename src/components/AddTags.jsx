@@ -5,11 +5,13 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { LocationContext } from "../contexts/LocationProvider";
+import { useNavigate } from "react-router-dom";
 
 const AddTags = () => {
   const {tags, refetch} = useContext(TagContext);
   const [loading, setLoading] = useState(false);
   const [openForm, setOpenForm] = useState(false);
+  const navigate = useNavigate();
   const API = useContext(LocationContext);
   const {
     register,
@@ -24,6 +26,8 @@ const AddTags = () => {
     axios
       .post(`${API}/tags`, {
         tag: data.tagname
+      }, {
+        withCredentials: true,
       })
       .then(() => {
         toast.success("Successfully added tag!", {
@@ -36,6 +40,9 @@ const AddTags = () => {
           position: "top-left",
           autoClose: 2000,
         });
+        console.error("Axios Error:", err.status);
+        if(err.status === 401) navigate('/login');
+        throw err;
       })
       .finally(() => {
         setLoading(false);

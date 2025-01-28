@@ -17,18 +17,34 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import AddTags from "./AddTags";
+import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
   const API = useContext(LocationContext);
+  const navigate = useNavigate();
 
   const fetchUserPosts = async ({ email }) => {
-    const response = await axios.get(`${API}/my-posts/${email}?limit=${3}`);
+    const response = await axios.get(`${API}/my-posts/${email}?limit=${3}`, {
+      withCredentials: true,
+    }).catch((err) => {
+      console.error("Axios Error:", err.status);
+      if(err.status === 401) handleUnauthorized();
+      throw err;
+    });
+
     return response.data;
   };
 
   const fetchStats = async () => {
-    const response = await axios.get(`${API}/stats`);
+    const response = await axios.get(`${API}/stats`, {
+      withCredentials: true,
+    }).catch((err) => {
+      console.error("Axios Error:", err.status);
+      if(err.status === 401) handleUnauthorized();
+      throw err;
+    });
+
     return response.data;
   };
 
@@ -40,10 +56,16 @@ const MyProfile = () => {
     enabled: !!email,
   });
 
+  const handleUnauthorized = () => {
+    navigate('/login');
+  }
+
   const { data: statsData } = useQuery({
     queryKey: ["stats"],
     queryFn: () => fetchStats(),
   });
+
+  
 
   useEffect(() => {
     refetch();

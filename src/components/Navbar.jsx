@@ -5,18 +5,32 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import {AnnouncementContext} from "../contexts/AnnouncementProvider";
+import { useLocation } from 'react-router-dom';
+import axios from "axios";
+import { LocationContext } from "../contexts/LocationProvider";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, setUser, logout } = useContext(AuthContext);
   const { announcementnum } = useContext(AnnouncementContext);
   const [navDropdown, setNavDropdown] = useState(false);
+  const API = useContext(LocationContext);
+  const location = useLocation();
   const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    setNavDropdown(false);
+  }, [location]); 
 
   const handleLogout = async () => {
     await logout()
       .then(() => {
         setUser(null);
+        axios
+          .post(`${API}/logout`, {}, {
+            withCredentials: true,
+          })
+          .then(() => console.log("Logged out"));
         toast.success("Logout Successful!", {
           position: "top-left",
           autoClose: 2000,
@@ -111,13 +125,13 @@ const Navbar = () => {
                   <h1 className="py-2 px-6 font-bold text-sm border-b-2 border-gray-800">
                     {user?.displayName}
                   </h1>
-                  <div className="py-1 pb-4 ">
+                  <div className="mb-2 mt-4 py-1 px-3 rounded-lg bg-white text-primary font-bold transition-all duration-300 hover:bg-secondary hover:text-white cursor-pointer">
                     <Link to={"/dashboard/my-profile"}>Dashboard</Link>
                   </div>
 
                   <button
                     onClick={handleLogout}
-                    className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
+                    className="py-1 px-3 rounded-lg w-full bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary cursor-pointer"
                   >
                     Logout
                   </button>

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 // import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { LocationContext } from "../contexts/LocationProvider";
 
 const Login = () => {
   const {
@@ -19,6 +21,7 @@ const Login = () => {
     useContext(AuthContext);
   //   const API = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
+  const API = useContext(LocationContext);
 
   useEffect(() => {
     const fetchAnimation = async () => {
@@ -39,11 +42,11 @@ const Login = () => {
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
-        /*axios
-          .post(`${API}/jwt`, userCredential.user.displayName, {
+        axios
+          .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
           })
-          .then((res) => console.log(res.data));*/
+          .then((cookie) => console.log(cookie));
         navigate("/");
         toast.success(`Login Successful`, {
           position: "top-left",
@@ -64,12 +67,11 @@ const Login = () => {
     signInWithEmail(data.email, data.password)
       .then((userCredential) => {
         setUser(userCredential.user);
-        // setUser(userCredential.user);
-        /*axios
-          .post(`${API}/jwt`, userCredential.user.displayName, {
+        axios
+          .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
           })
-          .then((cookie) => console.log(cookie));*/
+          .then((cookie) => console.log(cookie));
         toast.success("Login Successful!", {
           position: "top-left",
           autoClose: 2000,

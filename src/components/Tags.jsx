@@ -19,7 +19,7 @@ const Tags = ({ selectedTag, setSelectedTag }) => {
         >
           <p>All</p>
         </div>
-        {tags.map((tag, index) => (
+        {tags?.map((tag, index) => (
           <div
             key={index}
             className={`${

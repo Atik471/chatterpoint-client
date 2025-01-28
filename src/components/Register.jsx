@@ -45,11 +45,11 @@ const Register = () => {
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
-        /*axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
-        .then(cookie => console.log(cookie))*/
-
-        // axios.get(`${API}/users/${userCredential.user.email}`)
-
+        axios
+          .post(`${API}/jwt`, userCredential.user.email, {
+            withCredentials: true,
+          })
+          .then((cookie) => console.log(cookie));
         axios
           .post(`${API}/users/register`, {
             name: userCredential.user.displayName,
@@ -58,7 +58,7 @@ const Register = () => {
             role: "user",
             badges: ["bronze"],
           })
-          .then((res) => console.log(res.data))
+          .then((res) => {console.log(res.data)})
           .catch((err) =>
             toast.error(`Registration Failed! ${err}`, {
               position: "top-left",
@@ -95,7 +95,13 @@ const Register = () => {
           role: "user",
           badges: ["bronze"],
         })
-        .then((res) => console.log(res.data))
+        .then((res) => {console.log(res.data)
+          axios
+          .post(`${API}/jwt`, data.email, {
+            withCredentials: true,
+          })
+          .then((cookie) => console.log(cookie));
+        })
         .catch((err) =>
           toast.error(`Registration Failed! ${err}`, {
             position: "top-left",

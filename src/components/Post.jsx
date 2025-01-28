@@ -4,11 +4,51 @@ import { BiUpvote } from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthProvider";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { LocationContext } from "../contexts/LocationProvider";
 
 const Post = ({ post }) => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const API = useContext(LocationContext);
+  const [vote, setVote] = useState(0);
+
+  useEffect(() => {
+    setVote(post.upvote - post.downvote);
+  }, [setVote, post])
+
+  const handleUpVote = () => {
+    setLoading(true);
+    axios
+      .post(`${API}/post/${post._id}/vote`, {
+        vote: 1
+      })
+      .then((response) => {
+        console.log(response.data);
+        setVote(vote+1);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+  };
+  const handleDownVote = () => {
+    setLoading(true);
+    axios
+      .post(`${API}/post/${post._id}/vote`, {
+        vote: -1
+      })
+      .then((response) => {
+        console.log(response.data);
+        setVote(vote-1);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
     <div
@@ -43,11 +83,12 @@ const Post = ({ post }) => {
         <p>{post?.description}</p>
       </div>
       <div className="pt-5 px-5 flex items-center justify-start gap-4">
-        <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
-          <button disabled={!user && true}>
+        <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 py-2 px-1">
+          <button disabled={!user && true} onClick={handleUpVote}>
             <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
           </button>
-          <button disabled={!user && true}>
+          <span>{vote}</span>
+          <button disabled={!user && true} onClick={handleDownVote}>
             <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
           </button>
         </div>

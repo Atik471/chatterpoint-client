@@ -22,7 +22,13 @@ const AddPost = () => {
   const {tags} = useContext(TagContext);
   const fetchPostCount = async () => {
     //setIsLoading(true);
-    const { data } = await axios.get(`${API}/post-count/${user.email}`);
+    const { data } = await axios.get(`${API}/post-count/${user.email}`, {
+      withCredentials: true,
+    }).catch((err) => {
+      console.error("Axios Error:", err.status);
+      if(err.status === 401) navigate('/login');
+      throw err;
+    });
     setIsLoading(false);
     return data;
   };
@@ -32,6 +38,8 @@ const AddPost = () => {
     queryFn: fetchPostCount,
     keepPreviousData: true,
   });
+
+  
 
   useEffect(() => {
     refetch();
@@ -63,6 +71,8 @@ const AddPost = () => {
         upvote: 0,
         downvote: 0,
         comments: 0,
+      }, {
+        withCredentials: true,
       })
       .then(() => {
         //console.log(res.data);
@@ -73,11 +83,13 @@ const AddPost = () => {
         });
       })
       .catch((err) => {
-        //console.log(err);
         toast.error(`Failed to submit your post! ${err}`, {
           position: "top-left",
           autoClose: 2000,
         });
+        console.error("Axios Error:", err.status);
+        if(err.status === 401) navigate('/login');
+        throw err;
       })
       .finally(() => setLoading(false));
   };
@@ -117,7 +129,7 @@ const AddPost = () => {
                   <option disabled selected value="Select a tag">
                     Select a tag
                   </option>
-                  {tags.map((tag, index) => (
+                  {tags?.map((tag, index) => (
                     <>
                       <option key={index}>{tag}</option>
                     </>

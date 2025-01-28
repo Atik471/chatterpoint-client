@@ -32,6 +32,7 @@ const PostDetails = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [vote, setVote] = useState(0);
 
   const url = `https://chatterpoint.web.app${location.pathname}`;
 
@@ -51,10 +52,11 @@ const PostDetails = () => {
 
   useEffect(() => {
     refetch();
-  }, [data]);
+  }, [data, refetch]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading posts.</div>;
+  useEffect(() => {
+    setVote(data.upvote - data.downvote);
+  }, [setVote, data])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,6 +98,40 @@ const PostDetails = () => {
       });
   };
 
+  const handleUpVote = () => {
+    setLoading(true);
+    axios
+      .post(`${API}/post/${data._id}/vote`, {
+        vote: 1
+      })
+      .then((response) => {
+        console.log(response.data);
+        setVote(vote+1);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+  };
+  const handleDownVote = () => {
+    setLoading(true);
+    axios
+      .post(`${API}/post/${data._id}/vote`, {
+        vote: -1
+      })
+      .then((response) => {
+        console.log(response.data);
+        setVote(vote-1);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading posts.</div>;
+
   return (
     <div className="md:w-[60%]  min-h-screen mx-auto">
       <div className="flex gap-4 items-start mt-12">
@@ -120,10 +156,11 @@ const PostDetails = () => {
         <div className="flex gap-4">
           <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4 w-20 py-2">
             <button disabled={!user && true}>
-              <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+              <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" onClick={handleUpVote} />
             </button>
+            <span>{vote}</span>
             <button disabled={!user && true}>
-              <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+              <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" onClick={handleDownVote} />
             </button>
           </div>
           <button disabled={!user && true}>

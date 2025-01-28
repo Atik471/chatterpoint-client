@@ -10,10 +10,12 @@ import { useContext, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { refetchUsers } from "./Users";
+import { useNavigate } from "react-router-dom";
 
 const UserRow = ({ user }) => {
   const [open, setOpen] = useState(false);
   const API = useContext(LocationContext);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,14 +27,19 @@ const UserRow = ({ user }) => {
 
   const handleSubmit = () => {
     axios
-      .put(`${API}/user/update-role/${user._id}`, user.role === 'user' ? {role: 'admin'} : {role: 'user'})
+      .put(`${API}/user/update-role/${user._id}`, user.role === 'user' ? {role: 'admin'} : {role: 'user'}, {
+        withCredentials: true,
+      })
       .then(() => refetchUsers())
-      .catch((err) =>
+      .catch((err) => {
         toast.error(`Action Failed! ${err}`, {
           position: "top-left",
           autoClose: 2000,
         })
-      );
+        console.error("Axios Error:", err.status);
+        if(err.status === 401) navigate('/login');
+        throw err;
+  })
   };
 
   const truncateText = (text, limit) => {

@@ -31,7 +31,7 @@ const Banner = ({ setSelectedTag }) => {
 			<option>
               All
             </option>
-            {tags.map((tag, index) => (
+            {tags?.map((tag, index) => (
               <>
                 <option key={index}>{tag}</option>
               </>

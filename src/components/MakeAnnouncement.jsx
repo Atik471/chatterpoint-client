@@ -4,6 +4,7 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const MakeAnnouncement = () => {
   const {
@@ -15,6 +16,7 @@ const MakeAnnouncement = () => {
   const { user } = useContext(AuthContext);
   const API = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleAddPost = (data) => {
     setLoading(true);
@@ -33,21 +35,23 @@ const MakeAnnouncement = () => {
         title: data.title,
         description: data.description,
         date: currDate,
+      }, {
+        withCredentials: true,
       })
       .then(() => {
-        //console.log(res.data);
-        //navigate("/");
         toast.success("Successfully posted announcement!", {
           position: "top-left",
           autoClose: 2000,
         });
       })
       .catch((err) => {
-        //console.log(err);
         toast.error(`Failed to post announcement! ${err}`, {
           position: "top-left",
           autoClose: 2000,
         });
+        console.error("Axios Error:", err.status);
+        if(err.status === 401) navigate('/login');
+        throw err;
       })
       .finally(() => {
         setLoading(false); 

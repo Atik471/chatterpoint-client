@@ -14,7 +14,13 @@ const MyPosts = () => {
 
   const fetchUserPosts = async ({ email }) => {
     const response = await axios.get(
-      `${API}/my-posts/${email}?limit=${5}&page=${page}`
+      `${API}/my-posts/${email}?limit=${5}&page=${page}`, {
+        withCredentials: true,
+      }).catch((err) => {
+        console.error("Axios Error:", err.status);
+        if(err.status === 401) navigate('/login');
+        throw err;
+      }
     );
     setLoading(false);
     return response.data;
