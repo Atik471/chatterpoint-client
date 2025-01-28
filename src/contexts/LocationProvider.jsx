@@ -5,8 +5,8 @@ export const LocationContext = createContext()
 
 const LocationProvider = ({ children }) => {
 
-    const API = "http://localhost:5000"
-    // const API = "https://chatter-point-api.vercel.app"
+    // const API = "http://localhost:5000"
+    const API = "https://chatter-point-api.vercel.app"
     return (
         <LocationContext.Provider value={API}>
             {children}
