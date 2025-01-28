@@ -68,7 +68,7 @@ const AddTags = () => {
         <div>
           {!openForm && (
             <button
-              className={`px-2 py-1 border-2  rounded-lg font-bold text-center hover:bg-tertiary cursor-pointer transition-all duration-300 flex gap-1 items-center`}
+              className={`px-2 py-1 border-2  rounded-lg font-bold text-center bg-white hover:bg-tertiary hover:text-white text-black cursor-pointer transition-all duration-300 flex gap-1 items-center`}
               onClick={() => setOpenForm(!openForm)}
             >
               <span>Add Tag</span> <BiPlus className="font-bold text-xl" />{" "}

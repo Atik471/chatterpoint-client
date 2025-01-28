@@ -4,10 +4,10 @@ import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Lottie from "lottie-react";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -23,6 +23,8 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const [animationData, setAnimationData] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     const fetchAnimation = async () => {
@@ -58,26 +60,42 @@ const Register = () => {
             role: "user",
             badges: ["bronze"],
           })
-          .then((res) => {console.log(res.data)})
-          .catch((err) =>
-            toast.error(`Registration Failed! ${err}`, {
-              position: "top-left",
-              autoClose: 2000,
-            })
+          .then(() => {toast.success("Registration Successful!", {
+            position: "top-left",
+            autoClose: 2000,
+          });})
+          .catch((err) => {
+            if(err.status === 400){
+              toast.error(`Email already registered`, {
+                position: "top-left",
+                autoClose: 2000,
+              });
+            }
+            else{
+              toast.error(`Registration Failed! ${err}`, {
+                position: "top-left",
+                autoClose: 2000,
+              });
+          }}
           );
 
         navigate("/");
-        toast.success("Registration Successful!", {
-          position: "top-left",
-          autoClose: 2000,
-        });
+        
       })
       .catch((error) => {
         const errorMessage = error.message;
-        toast.error(`Registration Failed! ${errorMessage}`, {
-          position: "top-left",
-          autoClose: 2000,
-        });
+        if(error.status === 400){
+          toast.error(`Email already registered`, {
+            position: "top-left",
+            autoClose: 2000,
+          });
+        }
+        else{
+          toast.error(`Registration Failed! ${errorMessage}`, {
+            position: "top-left",
+            autoClose: 2000,
+          });
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -146,75 +164,108 @@ const Register = () => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-primary text-white py-4 md:px-24 px-6">
       <Helmet>
-        <title>ServiceTrek | Register</title>
+        <title>ChatterPoint | Register</title>
       </Helmet>
-      <div className="w-full md:w-1/2 p-6">
-        <h1>Register</h1>
+
+      {/* Left Side Form */}
+      <div className="w-full md:w-1/2 p-6 bg-secondary rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold mb-6 text-center">Register</h1>
+
         <form
           onSubmit={handleSubmit(handleRegisterWithEmail)}
-          className="space-y-4"
+          className="space-y-6"
         >
-          <input
-            type="text"
-            name="Username"
-            placeholder="Username"
-            {...register("name", { required: "Name is required" })}
-            className="bg-primary"
-          />
-          {errors.name && <p>{errors.name.message}</p>}
+          {/* Username Input */}
+          <div>
+            <input
+              type="text"
+              name="Username"
+              placeholder="Username"
+              {...register("name", { required: "Name is required" })}
+              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            {...register("email", { required: "Email is required" })}
-            className="bg-primary"
-          />
-          {errors.email && <p>{errors.email.message}</p>}
+          {/* Email Input */}
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              {...register("email", { required: "Email is required" })}
+              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+          </div>
 
-          <input
-            type="text"
-            name="photoURL"
-            placeholder="Photo URL"
-            {...register("photoURL")}
-            className="bg-primary"
-          />
+          {/* Photo URL Input */}
+          <div>
+            <input
+              type="text"
+              name="photoURL"
+              placeholder="Photo URL"
+              {...register("photoURL")}
+              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            {...register("password", {
-              required: "Password is required",
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-                message:
-                  "Password must be at least 6 characters long and include at least one uppercase and one lowercase letter",
-              },
-            })}
-            className="bg-primary"
-          />
-          {errors.password && <p>{errors.password.message}</p>}
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            {...register("confirmPassword", {
-              required: "Confirm Password is required",
-              validate: (value) =>
-                value === watch("password") || "Passwords do not match",
-            })}
-            className="bg-primary"
-          />
-          {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          {/* Password Input */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              {...register("password", {
+                required: "Password is required",
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                  message:
+                    "Password must be at least 6 characters long and include at least one uppercase and one lowercase letter",
+                },
+              })}
+              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <span
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-gray-300"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+          </div>
 
-          <button type="submit">Register</button>
-        </form>
-        <div className="flex items-center justify-center mt-4">
-          <button onClick={handleRegisterWithGoogle}>
-            Register with Google
+          {/* Confirm Password Input */}
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              {...register("confirmPassword", {
+                required: "Confirm Password is required",
+                validate: (value) =>
+                  value === watch("password") || "Passwords do not match",
+              })}
+              className="w-full p-3 rounded-lg bg-primary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <span
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-gray-300"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all duration-300"
+          >
+            Register
           </button>
-        </div>
+        </form>
+
         <p className="text-sm text-gray-500 mt-4 text-center">
           Already have an account?{" "}
           <span
@@ -224,7 +275,19 @@ const Register = () => {
             Login
           </span>
         </p>
+
+        <div className="flex items-center justify-center mt-4">
+          <button
+            onClick={handleRegisterWithGoogle}
+            className="py-3 px-6  w-full bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-all duration-300"
+          >
+            Register with Google
+          </button>
+        </div>
+
+        
       </div>
+
       <div className="hidden md:block w-1/2 p-8">
         {animationData && (
           <Lottie animationData={animationData} height={400} width={400} />

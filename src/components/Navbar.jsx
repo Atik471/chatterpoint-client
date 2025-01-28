@@ -58,7 +58,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex justify-between items-center py-3 bg-secondary text-white md:px-[5%] px-4">
+    <nav className="flex justify-between items-center py-3 bg-secondary text-white md:px-[5%] px-4 fixed top-0 w-full">
       <h1
         onClick={() => navigate("/")}
         className="cursor-pointer text-xl font-bold text-tertiary"
@@ -92,9 +92,16 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center space-x-8">
-        <div className="relative">
+        <div className="relative" data-tooltip-id="announcement"
+                data-tooltip-content={`${announcementnum} Announcements`}>
           <FaBell className="text-xl cursor-pointer hover:text-tertiary transition-all duration-300" />
           <span className="text-xs text-red-500 font-extrabold absolute transition-all duration-300 -top-1 -right-2">{announcementnum}</span>
+          <ReactTooltip
+                place="top"
+                type="dark"
+                effect="float"
+                id="announcement"
+              />
         </div>
         {!user ? (
           <button

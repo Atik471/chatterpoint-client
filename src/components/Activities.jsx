@@ -2,7 +2,8 @@ import { useContext, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import ActivityRow from "../components/ActivityRow"
+import ActivityRow from "../components/ActivityRow";
+import { Helmet } from "react-helmet-async";
 
 export let refetchReports;
 
@@ -15,7 +16,9 @@ const Activities = () => {
 
   const fetchReports = async () => {
     setIsLoading(true);
-    const { data } = await axios.get(`${API}/report?page=${page}&limit=${limit}`);
+    const { data } = await axios.get(
+      `${API}/report?page=${page}&limit=${limit}`
+    );
     setIsLoading(false);
     return data;
   };
@@ -43,10 +46,13 @@ const Activities = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>ChatterPoint | Activities</title>
+      </Helmet>
       <table className="my-12 min-w-full border-collapse border border-gray-800 text-left">
         <thead>
           <tr className="bg-tertiary text-white">
-          <th className="px-4 py-2 border border-gray-800">Reported by</th>
+            <th className="px-4 py-2 border border-gray-800">Reported by</th>
             <th className="px-4 py-2 border border-gray-800">Comment</th>
             <th className="px-4 py-2 border border-gray-800">Feedback</th>
             <th className="px-4 py-2 border border-gray-800">Action</th>

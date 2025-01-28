@@ -14,9 +14,11 @@ const Post = ({ post }) => {
   const [loading, setLoading] = useState(false);
   const API = useContext(LocationContext);
   const [vote, setVote] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
     setVote(post.upvote - post.downvote);
+    setCommentCount(post.comments);
   }, [setVote, post])
 
   const handleUpVote = () => {
@@ -92,9 +94,12 @@ const Post = ({ post }) => {
             <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
           </button>
         </div>
-        <button disabled={!user && true}>
-          <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
-        </button>
+        <div className="flex items-center gap-3">
+          <button disabled={!user && true} onClick={() => navigate(`/post/${post._id}`)}>
+            <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+          </button>
+          <span>{commentCount}</span>
+          </div>
       </div>
     </div>
   );

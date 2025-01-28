@@ -23,6 +23,7 @@ import {
   WhatsappIcon,
   LinkedinIcon,
 } from "react-share";
+import { Helmet } from "react-helmet-async";
 
 const PostDetails = () => {
   const API = useContext(LocationContext);
@@ -58,7 +59,7 @@ const PostDetails = () => {
   useEffect(() => {
     setVote(data.upvote - data.downvote);
     setCommentCount(data.comments);
-  }, [setVote, data])
+  }, [setVote, data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,7 +87,7 @@ const PostDetails = () => {
           position: "top-left",
           autoClose: 2000,
         });
-        setCommentCount(commentCount+1);
+        setCommentCount(commentCount + 1);
         await refetchComments();
       })
       .catch((err) => {
@@ -105,11 +106,11 @@ const PostDetails = () => {
     setLoading(true);
     axios
       .post(`${API}/post/${data._id}/vote`, {
-        vote: 1
+        vote: 1,
       })
       .then((response) => {
         console.log(response.data);
-        setVote(vote+1);
+        setVote(vote + 1);
       })
       .catch((error) => {
         console.error(error);
@@ -120,11 +121,11 @@ const PostDetails = () => {
     setLoading(true);
     axios
       .post(`${API}/post/${data._id}/vote`, {
-        vote: -1
+        vote: -1,
       })
       .then((response) => {
         console.log(response.data);
-        setVote(vote-1);
+        setVote(vote - 1);
       })
       .catch((error) => {
         console.error(error);
@@ -132,11 +133,14 @@ const PostDetails = () => {
       .finally(() => setLoading(false));
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="pt-6">Loading...</div>;
   if (isError) return <div>Error loading posts.</div>;
 
   return (
-    <div className="md:w-[60%]  min-h-screen mx-auto">
+    <div className="md:w-[60%]  min-h-screen mx-auto pt-6">
+      <Helmet>
+        <title>ChatterPoint | Post</title>
+      </Helmet>
       <div className="flex gap-4 items-start mt-12">
         <img
           src={data?.photoURL || "/assets/pfp.png"}
@@ -159,18 +163,24 @@ const PostDetails = () => {
         <div className="flex gap-4">
           <div className="border-2 border-secondary rounded-lg flex items-center justify-center gap-4  px-1 py-2">
             <button disabled={!user && true}>
-              <BiUpvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" onClick={handleUpVote} />
+              <BiUpvote
+                className="h-5 w-5 hover:text-tertiary transition-all duration-300"
+                onClick={handleUpVote}
+              />
             </button>
             <span>{vote}</span>
             <button disabled={!user && true}>
-              <BiDownvote className="h-5 w-5 hover:text-tertiary transition-all duration-300" onClick={handleDownVote} />
+              <BiDownvote
+                className="h-5 w-5 hover:text-tertiary transition-all duration-300"
+                onClick={handleDownVote}
+              />
             </button>
           </div>
           <div className="flex items-center gap-3">
-          <button disabled={!user && true}>
-            <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
-          </button>
-          <span>{commentCount}</span>
+            <button disabled={!user && true}>
+              <MdOutlineInsertComment className="h-5 w-5 hover:text-tertiary transition-all duration-300" />
+            </button>
+            <span>{commentCount}</span>
           </div>
         </div>
         <div className="flex gap-2">

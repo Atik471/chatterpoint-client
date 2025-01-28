@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import AddTags from "./AddTags";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
@@ -25,25 +26,29 @@ const MyProfile = () => {
   const navigate = useNavigate();
 
   const fetchUserPosts = async ({ email }) => {
-    const response = await axios.get(`${API}/my-posts/${email}?limit=${3}`, {
-      withCredentials: true,
-    }).catch((err) => {
-      console.error("Axios Error:", err.status);
-      if(err.status === 401) handleUnauthorized();
-      throw err;
-    });
+    const response = await axios
+      .get(`${API}/my-posts/${email}?limit=${3}`, {
+        withCredentials: true,
+      })
+      .catch((err) => {
+        console.error("Axios Error:", err.status);
+        if (err.status === 401) handleUnauthorized();
+        throw err;
+      });
 
     return response.data;
   };
 
   const fetchStats = async () => {
-    const response = await axios.get(`${API}/stats`, {
-      withCredentials: true,
-    }).catch((err) => {
-      console.error("Axios Error:", err.status);
-      if(err.status === 401) handleUnauthorized();
-      throw err;
-    });
+    const response = await axios
+      .get(`${API}/stats`, {
+        withCredentials: true,
+      })
+      .catch((err) => {
+        console.error("Axios Error:", err.status);
+        if (err.status === 401) handleUnauthorized();
+        throw err;
+      });
 
     return response.data;
   };
@@ -57,15 +62,13 @@ const MyProfile = () => {
   });
 
   const handleUnauthorized = () => {
-    navigate('/login');
-  }
+    navigate("/login");
+  };
 
   const { data: statsData } = useQuery({
     queryKey: ["stats"],
     queryFn: () => fetchStats(),
   });
-
-  
 
   useEffect(() => {
     refetch();
@@ -80,6 +83,9 @@ const MyProfile = () => {
 
   return (
     <div className="md:w-[90%] mx-auto mt-12 flex flex-col items-center gap-4">
+      <Helmet>
+        <title>ChatterPoint | Profile</title>
+      </Helmet>
       <img
         src={user?.photoURL || "/assets/pfp.png"}
         alt={user?.displayName}
@@ -105,24 +111,32 @@ const MyProfile = () => {
         <ReactTooltip place="bottom" type="dark" effect="float" id="badge" />
       </div>
 
-        {
-          user.role === "admin" && (
-            <div className="my-4 flex gap-6">
-              <div>
-                <p className="text-tertiary font-bold">Users: <span className="text-white">{statsData?.userCount}</span></p>
-              </div>
-              <div>
-                <p className="text-tertiary font-bold">Posts: <span className="text-white">{statsData?.postCount}</span></p>
-              </div>
-              <div>
-                <p className="text-tertiary font-bold">Comments: <span className="text-white">{statsData?.commentCount}</span></p>
-              </div>
-            </div>
-          )
-        }
+      {user.role === "admin" && (
+        <div className="my-4 flex gap-6">
+          <div>
+            <p className="text-tertiary font-bold">
+              Users: <span className="text-white">{statsData?.userCount}</span>
+            </p>
+          </div>
+          <div>
+            <p className="text-tertiary font-bold">
+              Posts: <span className="text-white">{statsData?.postCount}</span>
+            </p>
+          </div>
+          <div>
+            <p className="text-tertiary font-bold">
+              Comments:{" "}
+              <span className="text-white">{statsData?.commentCount}</span>
+            </p>
+          </div>
+        </div>
+      )}
       {user.role === "admin" && (
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={chartData} margin={{ top: 20, bottom: 20, left: 10, right: 10 }}>
+          <BarChart
+            data={chartData}
+            margin={{ top: 20, bottom: 20, left: 10, right: 10 }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -133,11 +147,7 @@ const MyProfile = () => {
         </ResponsiveContainer>
       )}
 
-      {
-        user.role === 'admin' && (
-          <AddTags/>
-        )
-      }
+      {user.role === "admin" && <AddTags />}
 
       <h1 className="my-2 text-tertiary font-bold text-2xl text-left w-full">
         My Recent Posts

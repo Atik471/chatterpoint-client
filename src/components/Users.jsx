@@ -3,6 +3,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import UserRow from "./UserRow";
+import { Helmet } from "react-helmet-async";
 
 export let refetchUsers;
 
@@ -15,7 +16,9 @@ const Users = () => {
 
   const fetchUsers = async () => {
     setIsLoading(true);
-    const { data } = await axios.get(`${API}/users?page=${page}&limit=${limit}`);
+    const { data } = await axios.get(
+      `${API}/users?page=${page}&limit=${limit}`
+    );
     setIsLoading(false);
     return data;
   };
@@ -43,6 +46,9 @@ const Users = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>ChatterPoint | Users</title>
+      </Helmet>
       <table className="my-12 min-w-full border-collapse border border-gray-800 text-left">
         <thead>
           <tr className="bg-tertiary text-white">

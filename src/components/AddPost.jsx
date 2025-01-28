@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { TagContext } from "../contexts/TagsProvider";
+import { Helmet } from "react-helmet-async";
 
 const AddPost = () => {
   const {
@@ -107,6 +108,9 @@ const AddPost = () => {
       {/* <h1 className="text-xl font-bold text-tertiary my-4 text-left">
         Add a post
       </h1> */}
+      <Helmet>
+              <title>ChatterPoint | Add Post</title>
+            </Helmet>
       <div className="bg-secondary p-4 rounded-lg mt-16">
         <form onSubmit={handleSubmit(handleAddPost)}>
           <div className="flex items-start gap-4 mb-4">

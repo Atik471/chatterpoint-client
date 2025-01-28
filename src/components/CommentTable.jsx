@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import CommentRow from "./CommentRow";
 import { IoChevronBackSharp } from "react-icons/io5";
+import { Helmet } from "react-helmet-async";
 
 // export let refetchComments;
 
@@ -19,7 +20,9 @@ const CommentTable = () => {
 
   const fetchComment = async () => {
     setIsLoading(true);
-    const { data } = await axios.get(`${API}/comments/${postId}?page=${page}&limit=${limit}`);
+    const { data } = await axios.get(
+      `${API}/comments/${postId}?page=${page}&limit=${limit}`
+    );
     setIsLoading(false);
     return data;
   };
@@ -37,7 +40,7 @@ const CommentTable = () => {
 
   const handleGoBack = () => {
     navigate(-1);
-  }
+  };
 
   const handlePageChange = async (newPage) => {
     setIsLoading(true);
@@ -49,8 +52,14 @@ const CommentTable = () => {
 
   return (
     <div className="my-5">
-      <button className="bg-tertiary hover:bg-white duration-200 transition-all p-1 rounded-full mb-5 ml-3" onClick={handleGoBack}>
-      <IoChevronBackSharp className="text-white hover:text-black duration-200 transition-all text-xl" />
+      <Helmet>
+        <title>ChatterPoint | Comments</title>
+      </Helmet>
+      <button
+        className="bg-tertiary hover:bg-white duration-200 transition-all p-1 rounded-full mb-5 ml-3"
+        onClick={handleGoBack}
+      >
+        <IoChevronBackSharp className="text-white hover:text-black duration-200 transition-all text-xl" />
       </button>
       <table className=" min-w-full border-collapse border border-gray-800 text-left">
         <thead>

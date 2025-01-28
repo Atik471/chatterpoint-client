@@ -5,6 +5,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const MakeAnnouncement = () => {
   const {
@@ -28,16 +29,20 @@ const MakeAnnouncement = () => {
     const currDate = `${day} ${month} ${year}`;
 
     axios
-      .post(`${API}/announcements`, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        title: data.title,
-        description: data.description,
-        date: currDate,
-      }, {
-        withCredentials: true,
-      })
+      .post(
+        `${API}/announcements`,
+        {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          title: data.title,
+          description: data.description,
+          date: currDate,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then(() => {
         toast.success("Successfully posted announcement!", {
           position: "top-left",
@@ -50,11 +55,11 @@ const MakeAnnouncement = () => {
           autoClose: 2000,
         });
         console.error("Axios Error:", err.status);
-        if(err.status === 401) navigate('/login');
+        if (err.status === 401) navigate("/login");
         throw err;
       })
       .finally(() => {
-        setLoading(false); 
+        setLoading(false);
         reset();
       });
   };
@@ -69,9 +74,9 @@ const MakeAnnouncement = () => {
 
   return (
     <div className="min-h-screen md:mx-[20%] mx-4 my-4">
-      {/* <h1 className="text-xl font-bold text-tertiary my-4 text-left">
-                Add a post
-              </h1> */}
+      <Helmet>
+        <title>ChatterPoint | Announcements</title>
+      </Helmet>
       <div className="bg-secondary p-4 rounded-lg mt-16">
         <form onSubmit={handleSubmit(handleAddPost)}>
           <div className="flex items-start gap-4 mb-4">

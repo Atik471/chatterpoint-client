@@ -4,6 +4,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const MyPosts = () => {
   const { user } = useContext(AuthContext);
@@ -13,15 +14,15 @@ const MyPosts = () => {
   const navigate = useNavigate();
 
   const fetchUserPosts = async ({ email }) => {
-    const response = await axios.get(
-      `${API}/my-posts/${email}?limit=${5}&page=${page}`, {
+    const response = await axios
+      .get(`${API}/my-posts/${email}?limit=${5}&page=${page}`, {
         withCredentials: true,
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.error("Axios Error:", err.status);
-        if(err.status === 401) navigate('/login');
+        if (err.status === 401) navigate("/login");
         throw err;
-      }
-    );
+      });
     setLoading(false);
     return response.data;
   };
@@ -53,6 +54,9 @@ const MyPosts = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>ChatterPoint | My Posts</title>
+      </Helmet>
       <table className="my-12 min-w-full border-collapse border border-gray-800 text-left">
         <thead>
           <tr className="bg-tertiary text-white">
@@ -70,7 +74,10 @@ const MyPosts = () => {
                 {post.upvote - post.downvote}
               </td>
               <td className="px-4 py-2 border border-gray-800">
-                <button className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary" onClick={() => navigate(`/dashboard/comments/${post._id}`)} >
+                <button
+                  className="py-2 px-6 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary"
+                  onClick={() => navigate(`/dashboard/comments/${post._id}`)}
+                >
                   View Comments
                 </button>
               </td>
