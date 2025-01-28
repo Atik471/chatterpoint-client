@@ -126,7 +126,7 @@ const AddPost = () => {
         <form onSubmit={handleSubmit(handleAddPost)}>
           <div className="flex items-start gap-4 mb-4">
             <img
-              src={user?.photoURL}
+              src={user?.photoURL || "/assets/pfp.png"}
               alt={user?.displayName}
               className="w-10 h-10 rounded-full"
             />
