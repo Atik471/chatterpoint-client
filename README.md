@@ -35,6 +35,6 @@ Check out the live site: **[ChatterPoint](https://chatterpoint.web.app)**
 
 Use the following credentials to access the admin panel:
 
-- **Email**: `admin@google.com`
+- **Email**: `admin@gmail.com`
 - **Password**: `Admin12`
 
