@@ -93,12 +93,22 @@ const Navbar = () => {
         <NavLink
           to={"/membership"}
           className={({ isActive }) =>
-            `border-b-2 border-transparent pb-1 px-1 ${
+            `border-b-2 border-transparent pb-1 px-1 transition-all duration-300 ${
               isActive ? "active" : "hover:border-b-white"
             }`
           }
         >
           Membership
+        </NavLink>
+        <NavLink
+          to={"/dashboard/"}
+          className={({ isActive }) =>
+            `border-b-2 border-transparent pb-1 px-1 transition-all duration-300 ${
+              isActive ? "active" : "hover:border-b-white"
+            }`
+          }
+        >
+          Dashboard
         </NavLink>
       </ul>
 
