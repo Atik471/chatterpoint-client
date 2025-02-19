@@ -45,7 +45,7 @@ const Dashboard = () => {
       </button>
 
       <aside
-        className={`${
+        className={`border-r-2 border-secondary  ${
           isSidebarOpen ? 'left-0' : '-left-full'
         } fixed top-0 bottom-0 w-64 pl-4  bg-primary text-white md:left-0 transition-all duration-300 md:cols-span-1 flex flex-col dashnav md:pl-4 pt-12 md:pt-4 md:fixed z-40`}
       >
@@ -120,7 +120,7 @@ const Dashboard = () => {
         </button>
       </aside>
 
-      <div className="md:col-span-6 col-span-12 border-l-2 md:ml-[18%] border-secondary ">
+      <div className="md:col-span-6 col-span-12 md:ml-[28%] lg:ml-[17%]  ">
         <Outlet />
       </div>
     </div>
