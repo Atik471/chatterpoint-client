@@ -110,26 +110,30 @@ const Navbar = () => {
         >
           Dashboard
         </NavLink>
-        <NavLink
-          to={"/dashboard/add-post"}
-          className={({ isActive }) =>
-            `border-b-2 border-transparent pb-1 px-1 transition-all duration-300 ${
-              isActive ? "active" : "hover:border-b-white"
-            }`
-          }
-        >
-          Add Post
-        </NavLink>
-        <NavLink
-          to={"/dashboard/my-posts"}
-          className={({ isActive }) =>
-            `border-b-2 border-transparent pb-1 px-1 transition-all duration-300 ${
-              isActive ? "active" : "hover:border-b-white"
-            }`
-          }
-        >
-          My Posts
-        </NavLink>
+        {user && (
+          <>
+            <NavLink
+              to={"/dashboard/add-post"}
+              className={({ isActive }) =>
+                `border-b-2 border-transparent pb-1 px-1 transition-all duration-300 ${
+                  isActive ? "active" : "hover:border-b-white"
+                }`
+              }
+            >
+              Add Post
+            </NavLink>
+            <NavLink
+              to={"/dashboard/my-posts"}
+              className={({ isActive }) =>
+                `border-b-2 border-transparent pb-1 px-1 transition-all duration-300 ${
+                  isActive ? "active" : "hover:border-b-white"
+                }`
+              }
+            >
+              My Posts
+            </NavLink>
+          </>
+        )}
       </ul>
 
       <div className="flex items-center space-x-8">

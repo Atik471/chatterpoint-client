@@ -24,7 +24,18 @@ const Membership = () => {
       .finally(() => setLoading(false));
   }, [API]);
 
-  if (loading) return <div className="min-h-screen pt-6">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[95vh]">
+        <div className="relative">
+          <div className="w-28 h-28 border-8 border-tertiary border-solid rounded-full animate-spin border-t-transparent"></div>
+          <p className="absolute inset-0 flex items-center justify-center text-tertiary font-semibold text-xl">
+            Loading...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-primary py-10 px-4 md:px-10">
