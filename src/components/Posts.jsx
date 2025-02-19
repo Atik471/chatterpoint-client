@@ -62,8 +62,8 @@ const Posts = ({ selectedTag }) => {
   };
 
   return (
-    <section className="md:col-span-4 col-span-1 md:border-x-2 border-gray-800 min-h-[75vh] md:px-4 sm:px-8">
-      <div className="flex items-center justify-between pb-5 border-b-2 border-gray-800">
+    <section className="md:col-span-4 col-span-1 min-h-[75vh] md:px-4 sm:px-8">
+      <div className="flex items-center justify-between px-1 pb-4 ">
         <div
           className="py-2 px-4 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary flex gap-1 text-xs sm:text-sm cursor-pointer"
           data-tooltip-id="post"
@@ -104,7 +104,7 @@ const Posts = ({ selectedTag }) => {
         />
       </div>
 
-      <div className="pt-5">
+      <div className="border-gray-800 md:border-x-2 md:border-y-2 px-3 pt-3">
         {data?.posts?.map((post) => (
           <Post key={post._id} post={post} />
         ))}
