@@ -72,7 +72,7 @@ const Navbar = () => {
       </div>
 
       <ul
-        className={`md:flex gap-4 font-semibold items-center space-x-4 md:space-x-8 transition-all duration-300 ${
+        className={`md:flex gap-3 font-semibold items-center transition-all duration-300 ${
           mobileMenuOpen
             ? "flex flex-col absolute top-[60px] left-0 w-full bg-secondary text-center p-4"
             : "hidden md:flex"
