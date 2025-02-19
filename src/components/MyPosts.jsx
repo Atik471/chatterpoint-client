@@ -52,7 +52,16 @@ const MyPosts = () => {
   const posts = data?.posts;
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-[95vh]">
+        <div className="relative">
+          <div className="w-28 h-28 border-8 border-tertiary border-solid rounded-full animate-spin border-t-transparent"></div>
+          <p className="absolute inset-0 flex items-center justify-center text-tertiary font-semibold text-xl">
+            Loading...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
