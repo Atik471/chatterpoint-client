@@ -8,6 +8,7 @@ import WhatIsChatterPoint from "./WhatIsChatterPoint";
 import DeveloperResources from "./DeveloperResources";
 import GettingStarted from "./GettingStarted";
 import BuyMembership from "./BuyMembership";
+import FAQ from "./FAQ";
 
 const Home = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -26,6 +27,7 @@ const Home = () => {
       <WhatIsChatterPoint />
       <DeveloperResources />
       <BuyMembership />
+      <FAQ />
       <GettingStarted />
     </section>
   );
