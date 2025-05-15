@@ -5,6 +5,7 @@ import { useState } from "react";
 import Announcements from "./Announcements";
 import { Helmet } from "react-helmet-async";
 import WhatIsChatterPoint from "./WhatIsChatterPoint";
+import DeveloperResources from "./DeveloperResources";
 
 const Home = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -21,6 +22,7 @@ const Home = () => {
         <Announcements />
       </div>
       <WhatIsChatterPoint />
+      <DeveloperResources />
     </section>
   );
 };
