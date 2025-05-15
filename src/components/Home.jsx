@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import WhatIsChatterPoint from "./WhatIsChatterPoint";
 import DeveloperResources from "./DeveloperResources";
 import GettingStarted from "./GettingStarted";
+import BuyMembership from "./BuyMembership";
 
 const Home = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -24,6 +25,7 @@ const Home = () => {
       </div>
       <WhatIsChatterPoint />
       <DeveloperResources />
+      <BuyMembership />
       <GettingStarted />
     </section>
   );

@@ -15,7 +15,7 @@ const GettingStarted = () => {
         to="/dashboard/add-post"
         className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all"
       >
-        Add Your First Post <FaArrowRight />
+        Post Your Ideas <FaArrowRight />
       </Link>
     </section>
   );
