@@ -4,6 +4,7 @@ import Posts from "./Posts";
 import { useState } from "react";
 import Announcements from "./Announcements";
 import { Helmet } from "react-helmet-async";
+import WhatIsChatterPoint from "./WhatIsChatterPoint";
 
 const Home = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -19,6 +20,7 @@ const Home = () => {
         <Posts selectedTag={selectedTag} />
         <Announcements />
       </div>
+      <WhatIsChatterPoint />
     </section>
   );
 };
