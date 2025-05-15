@@ -6,6 +6,7 @@ import Announcements from "./Announcements";
 import { Helmet } from "react-helmet-async";
 import WhatIsChatterPoint from "./WhatIsChatterPoint";
 import DeveloperResources from "./DeveloperResources";
+import GettingStarted from "./GettingStarted";
 
 const Home = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -23,6 +24,7 @@ const Home = () => {
       </div>
       <WhatIsChatterPoint />
       <DeveloperResources />
+      <GettingStarted />
     </section>
   );
 };
