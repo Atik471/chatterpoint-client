@@ -7,6 +7,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { AnnouncementContext } from "../contexts/AnnouncementProvider";
 import { useLocation } from "react-router-dom";
 import { IoMenu, IoClose } from "react-icons/io5";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -61,6 +62,8 @@ const Navbar = () => {
       >
         Chatter<span className="text-white">Point</span>
       </h1>
+
+      <SearchBar />
 
       <div className="md:hidden flex items-center order-1">
         <button

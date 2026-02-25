@@ -17,6 +17,7 @@ import MakeAnnouncement from "../components/MakeAnnouncement";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import PublicProfile from "../components/PublicProfile";
+import SearchResults from "../components/SearchResults";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "profile/:email",
         element: <PublicProfile />,
+      },
+      {
+        path: "search",
+        element: <SearchResults />,
       },
     ],
   },
