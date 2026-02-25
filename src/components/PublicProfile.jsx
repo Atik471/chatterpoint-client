@@ -9,6 +9,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { AuthContext } from "../contexts/AuthProvider";
 import FollowButton from "./FollowButton";
 import Post from "./Post";
+import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
 
 const PublicProfile = () => {
   const { email } = useParams();
@@ -123,6 +124,37 @@ const PublicProfile = () => {
           initialState={isAlreadyFollowing}
           onToggle={handleFollowToggle}
         />
+
+        {/* Bio */}
+        {profile?.bio && (
+          <p className="text-sm text-gray-300 text-center max-w-md mt-1">{profile.bio}</p>
+        )}
+
+        {/* Skills */}
+        {profile?.skills?.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 mt-1">
+            {profile.skills.map((s, i) => (
+              <span key={i} className="text-xs bg-tertiary/10 text-tertiary border border-tertiary/30 rounded-full px-3 py-0.5 font-medium">
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Social links */}
+        {(profile?.githubUrl || profile?.linkedinUrl || profile?.websiteUrl) && (
+          <div className="flex gap-5 mt-2 text-xl">
+            {profile.githubUrl && (
+              <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition"><FaGithub /></a>
+            )}
+            {profile.linkedinUrl && (
+              <a href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-[#0A66C2] hover:opacity-80 transition"><FaLinkedin /></a>
+            )}
+            {profile.websiteUrl && (
+              <a href={profile.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition"><FaGlobe /></a>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Recent posts */}
