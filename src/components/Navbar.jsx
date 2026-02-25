@@ -8,6 +8,7 @@ import { AnnouncementContext } from "../contexts/AnnouncementProvider";
 import { useLocation } from "react-router-dom";
 import { IoMenu, IoClose } from "react-icons/io5";
 import SearchBar from "./SearchBar";
+import NotificationBell from "./NotificationBell";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -172,6 +173,7 @@ const Navbar = () => {
           </button>
         ) : (
           <>
+            <NotificationBell />
             <div className="relative" ref={dropdownRef}>
               <img
                 src={user?.photoURL || "/assets/pfp.png"}
