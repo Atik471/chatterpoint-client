@@ -28,6 +28,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
+import FollowButton from "./FollowButton";
 
 const PostDetails = () => {
   const API = useContext(LocationContext);
@@ -156,16 +157,24 @@ const PostDetails = () => {
       <Helmet>
         <title>ChatterPoint | Post</title>
       </Helmet>
-      <div className="flex gap-4 items-start mt-12">
-        <img
-          src={data?.photoURL || "/assets/pfp.png"}
-          alt={data?.name}
-          className="w-12 h-12 rounded-full"
-        />
-        <div>
-          <h2 className="font-bold">{data?.name}</h2>
-          <p className="text-sm text-tertiary">{data?.email}</p>
+      <div className="flex gap-4 items-start mt-12 justify-between">
+        <div
+          className="flex gap-4 items-center cursor-pointer group"
+          onClick={() => navigate(`/profile/${encodeURIComponent(data?.email)}`)}
+        >
+          <img
+            src={data?.photoURL || "/assets/pfp.png"}
+            alt={data?.name}
+            className="w-12 h-12 rounded-full group-hover:ring-2 group-hover:ring-tertiary transition"
+          />
+          <div>
+            <h2 className="font-bold group-hover:text-tertiary transition">{data?.name}</h2>
+            <p className="text-sm text-tertiary">{data?.email}</p>
+          </div>
         </div>
+        {data?.email && (
+          <FollowButton targetEmail={data.email} />
+        )}
       </div>
       <div className="my-4 ">
         <p className="bg-tertiary rounded-xl text-xs font-semibold text-white inline-block px-2">

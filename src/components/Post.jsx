@@ -65,10 +65,16 @@ const Post = ({ post }) => {
           <img
             src={post?.photoURL || "/assets/pfp.png"}
             alt={post?.name}
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-tertiary transition"
+            onClick={(e) => { e.stopPropagation(); navigate(`/profile/${encodeURIComponent(post.email)}`); }}
           />
           <div>
-            <h1 className=" font-bold">{post?.name}</h1>
+            <h1
+              className="font-bold cursor-pointer hover:text-tertiary transition"
+              onClick={(e) => { e.stopPropagation(); navigate(`/profile/${encodeURIComponent(post.email)}`); }}
+            >
+              {post?.name}
+            </h1>
             <div>
               <p className="text-sm text-gray-400">{post?.date}</p>
             </div>

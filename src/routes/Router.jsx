@@ -16,6 +16,7 @@ import Activities from "../components/Activities";
 import MakeAnnouncement from "../components/MakeAnnouncement";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
+import PublicProfile from "../components/PublicProfile";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "post/:id",
         element: <PostDetails />,
+      },
+      {
+        path: "profile/:email",
+        element: <PublicProfile />,
       },
     ],
   },
