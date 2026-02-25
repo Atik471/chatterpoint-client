@@ -5,6 +5,8 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
+import EditPostModal from "./EditPostModal";
 
 const MyPosts = () => {
   const { user } = useContext(AuthContext);
@@ -12,6 +14,8 @@ const MyPosts = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [editPost, setEditPost] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchUserPosts = async ({ email }) => {
     const token = sessionStorage.getItem("authToken");
@@ -51,6 +55,25 @@ const MyPosts = () => {
 
   const posts = data?.posts;
 
+  const handleDelete = async (postId) => {
+    if (!window.confirm("Delete this post and all its comments?")) return;
+    setDeletingId(postId);
+    const token = sessionStorage.getItem("authToken");
+    try {
+      await axios.delete(`${API}/post/${postId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Post deleted.", { position: "top-left", autoClose: 2000 });
+      refetch();
+    } catch (err) {
+      toast.error(`Failed to delete: ${err.response?.data?.message || err.message}`, {
+        position: "top-left", autoClose: 3000,
+      });
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[95vh]">
@@ -69,6 +92,13 @@ const MyPosts = () => {
       <Helmet>
         <title>ChatterPoint | My Posts</title>
       </Helmet>
+      {editPost && (
+        <EditPostModal
+          post={editPost}
+          onClose={() => setEditPost(null)}
+          onSaved={() => refetch()}
+        />
+      )}
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-800 text-left">
           <thead>
@@ -76,7 +106,7 @@ const MyPosts = () => {
               <th className="px-4 py-2 border border-gray-800">Title</th>
               <th className="px-4 py-2 border border-gray-800">Votes</th>
               <th className="px-4 py-2 border border-gray-800">Comments</th>
-              <th className="px-4 py-2 border border-gray-800">Actions</th>
+              <th className="px-4 py-2 border border-gray-800" colSpan={2}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -97,8 +127,20 @@ const MyPosts = () => {
                   </button>
                 </td>
                 <td className="px-4 py-2 border border-gray-800">
-                  <button className="py-1 px-3 rounded-lg bg-tertiary font-bold transition-all duration-300 hover:bg-white hover:text-primary text-sm sm:text-base">
-                    Delete
+                  <button
+                    className="py-1 px-3 rounded-lg bg-blue-600 font-bold transition-all duration-300 hover:bg-white hover:text-primary text-sm sm:text-base"
+                    onClick={() => setEditPost(post)}
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td className="px-4 py-2 border border-gray-800">
+                  <button
+                    className="py-1 px-3 rounded-lg bg-red-600 font-bold transition-all duration-300 hover:bg-white hover:text-primary text-sm sm:text-base disabled:opacity-50"
+                    onClick={() => handleDelete(post._id)}
+                    disabled={deletingId === post._id}
+                  >
+                    {deletingId === post._id ? "Deleting…" : "Delete"}
                   </button>
                 </td>
               </tr>

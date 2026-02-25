@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { TagContext } from "../contexts/TagsProvider";
 import { Helmet } from "react-helmet-async";
+import MDEditor from "@uiw/react-md-editor";
 
 const AddPost = () => {
   const {
@@ -21,6 +22,7 @@ const AddPost = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { tags } = useContext(TagContext);
+  const [mdContent, setMdContent] = useState("");
   const fetchPostCount = async () => {
     //setIsLoading(true);
     const token = sessionStorage.getItem('authToken');
@@ -55,6 +57,10 @@ const AddPost = () => {
   let postCount = data?.postCount;
 
   const handleAddPost = (data) => {
+    if (!mdContent.trim()) {
+      toast.error("Post body cannot be empty.", { position: "top-left", autoClose: 2000 });
+      return;
+    }
     setLoading(true);
 
     const date = new Date();
@@ -74,7 +80,7 @@ const AddPost = () => {
           photoURL: user.photoURL,
           title: data.title,
           tags: data.tags,
-          description: data.description,
+          description: mdContent,
           date: currDate,
           upvote: 0,
           downvote: 0,
@@ -164,16 +170,18 @@ const AddPost = () => {
             />
             {errors.title && <p>{errors.title.message}</p>}
 
-            <textarea
-              placeholder="Write your post"
-              style={{ resize: "none" }}
-              rows="10"
-              className="bg-secondary px-1 py-2 rounded-lg appearance-none w-full focus:outline-none focus:border-transparent "
-              {...register("description", {
-                required: "Description is required",
-              })}
-            ></textarea>
-            {errors.description && <p>{errors.description.message}</p>}
+            <div data-color-mode="dark">
+              <MDEditor
+                value={mdContent}
+                onChange={(val) => setMdContent(val || "")}
+                height={320}
+                preview="edit"
+                placeholder="Write your post — supports **Markdown** and ```code blocks```"
+              />
+            </div>
+            {!mdContent.trim() && (
+              <p className="text-red-400 text-sm -mt-2">Post body is required</p>
+            )}
 
             <hr className="border-white/10" />
 

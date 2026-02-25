@@ -24,6 +24,10 @@ import {
   LinkedinIcon,
 } from "react-share";
 import { Helmet } from "react-helmet-async";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github-dark.css";
 
 const PostDetails = () => {
   const API = useContext(LocationContext);
@@ -168,7 +172,11 @@ const PostDetails = () => {
           {data?.tags}
         </p>
         <h1 className="mb-3 text-2xl font-bold">{data?.title}</h1>
-        <p>{data?.description}</p>
+        <div className="prose prose-invert max-w-none prose-pre:p-0 prose-code:text-tertiary">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+            {data?.description || ""}
+          </ReactMarkdown>
+        </div>
       </div>
       <div className="pt-5 md:px-5 flex items-center justify-between gap-4">
         <div className="flex gap-4">
